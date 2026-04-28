@@ -1,0 +1,501 @@
+Berikut adalah dokumen spesifikasi rinci untuk **Pilar 5: Brand Agency Hub**. Pilar ini adalah pusat kendali khusus untuk pengguna agensi yang mengelola banyak merek klien dalam satu platform, dengan fitur kolaborasi, pelaporan *white-label*, dan manajemen klien yang terintegrasi.
+
+---
+
+## 📁 Pilar 5: Brand Agency Hub (Manajemen Multi-Klien & White-Label)
+
+### 1. Tujuan Pilar
+
+Menyediakan lingkungan terpusat bagi agensi branding, pemasaran, atau desain untuk mengelola puluhan hingga ratusan *workspace* klien dari satu akun. Pilar ini dirancang untuk meningkatkan efisiensi operasional agensi, memfasilitasi kolaborasi dengan klien, dan menyediakan alat untuk *upselling* layanan melalui laporan profesional yang dapat di-*branding* dengan identitas agensi sendiri (*white-label*).
+
+### 2. Arsitektur Modul
+
+Pilar 5 terdiri dari lima modul utama yang saling terintegrasi:
+
+| No. | Nama Modul | Fungsi Utama | Prioritas |
+| :-- | :--- | :--- | :--- |
+| 1 | **Multi-Brand Command Center** | Dasbor terpadu untuk melihat dan mengelola semua *workspace* klien. | P0 (MVP) |
+| 2 | **Client Collaboration Suite** | Alat untuk *proofing*, komentar, dan persetujuan konten dengan klien. | P0 (MVP) |
+| 3 | **White-Label Reporting** | Generator laporan PDF yang dapat disesuaikan dengan logo dan warna agensi. | P0 (MVP) |
+| 4 | **Client Portal & Permissions** | Portal khusus untuk klien dengan akses terbatas dan tampilan yang disederhanakan. | P1 |
+| 5 | **Subscription & Billing Management** | Manajemen langganan klien dan *billing* terintegrasi (opsional). | P2 |
+
+---
+
+## 📄 Spesifikasi Fitur per Modul
+
+### Modul 5.1: Multi-Brand Command Center
+
+#### Tujuan
+Memberikan pandangan sekilas (*at-a-glance*) tentang status semua klien agensi dalam satu dasbor. Memungkinkan *agency owner* atau *project manager* untuk memantau kesehatan merek klien, aktivitas terbaru, dan tugas yang tertunda tanpa harus berpindah-pindah *workspace*.
+
+#### Alur Kerja (Workflow)
+
+1. **Akses Dasbor Agensi:**
+   - Pengguna dengan peran **Agency Admin** atau **Agency Manager** login ke BrandOS.
+   - Mereka diarahkan ke **Agency Command Center** (bukan *workspace* klien spesifik).
+
+2. **Tampilan Utama:**
+   - **Daftar Klien (Grid/List View):**
+     - Setiap klien ditampilkan sebagai kartu dengan:
+       - Logo klien (jika ada).
+       - Nama klien/perusahaan.
+       - **Brand Health Score** (dari Pilar 4) dengan indikator warna.
+       - Jumlah aset di DAM.
+       - Aktivitas terbaru (misal: "Postingan baru dijadwalkan", "Laporan siap").
+     - Pencarian dan filter (Berdasarkan status langganan, industri, *manager* yang bertanggung jawab).
+
+3. **Akses Cepat ke *Workspace* Klien:**
+   - Klik pada kartu klien akan membawa pengguna masuk ke *workspace* klien tersebut dengan **hak akses penuh** (Admin).
+
+4. **Dasbor Ringkasan Lintas Klien:**
+   - **Widget Ringkasan:**
+     - Total klien aktif.
+     - Rata-rata *Brand Health Score* semua klien.
+     - Total aset yang dikelola.
+     - Tugas *approval* yang tertunda dari semua klien.
+
+5. **Manajemen Klien (Tambah/Arsipkan):**
+   - Tombol **"+ Tambah Klien Baru"** untuk membuat *workspace* baru.
+   - Opsi untuk mengarsipkan klien (jika kontrak selesai) tanpa menghapus data.
+
+#### Konsep UI/UX
+
+**Agency Command Center (Tampilan Utama):**
+
+```text
++-----------------------------------------------------------------------+
+|  AGENCY COMMAND CENTER - [Nama Agensi]                [👤 Admin Agensi]|
+|  [🔍 Cari klien...]  [Filter: Semua ▼]  [Urutkan: Terbaru ▼]          |
++-----------------------------------------------------------------------+
+|  +------------------+  +------------------+  +------------------+      |
+|  | RINGKASAN        |  | RATA-RATA BRAND  |  | TUGAS TERTUNDA   |      |
+|  | KLIEN AKTIF      |  | HEALTH SCORE     |  | (APPROVAL)       |      |
+|  | 12               |  | 76/100 🟡        |  | 8                |      |
+|  +------------------+  +------------------+  +------------------+      |
+|                                                                       |
+|  DAFTAR KLIEN                                         [+ Tambah Klien] |
+|                                                                       |
+|  +---------------------------------------------------------------+    |
+|  | [Logo] Hening Coffee              | [Logo] Bloom Skincare      |    |
+|  | Brand Health: 78/100 🟡           | Brand Health: 92/100 🟢    |    |
+|  | Aset: 124  | Aktivitas: 2 jam lalu| Aset: 87  | Aktivitas: kemarin| |
+|  | [Masuk Workspace]                 | [Masuk Workspace]          |    |
+|  +---------------------------------------------------------------+    |
+|  | [Logo] TechNusa Solutions         | [Logo] Warung Sehat        |    |
+|  | Brand Health: 65/100 🔴           | Brand Health: 81/100 🟡    |    |
+|  | Aset: 56  | Aktivitas: 1 hari lalu| Aset: 210 | Aktivitas: 5 jam lalu||
+|  | [Masuk Workspace]                 | [Masuk Workspace]          |    |
+|  +---------------------------------------------------------------+    |
+|  ...                                                                   |
++-----------------------------------------------------------------------+
+```
+
+**Modal Tambah Klien Baru:**
+
+```text
++---------------------------------------------------+
+|  TAMBAH KLIEN BARU                        [X]     |
++---------------------------------------------------+
+|  Nama Klien / Perusahaan:                         |
+|  [____________________________]                   |
+|                                                   |
+|  Industri: [Pilih Industri ▼]                     |
+|  (F&B, Teknologi, Fashion, dll.)                  |
+|                                                   |
+|  Website (Opsional):                              |
+|  [____________________________]                   |
+|                                                   |
+|  PIC Klien (Email):                               |
+|  [____________________________]                   |
+|  (Undangan akan dikirim ke email ini)             |
+|                                                   |
+|  Paket Langganan:                                 |
+|  (●) Agency Pro (Unlimited Workspace)             |
+|  ( ) Basic (Terbatas 3 Workspace)                 |
+|                                                   |
+|  [ Batalkan ]  [ Buat Workspace & Kirim Undangan ] |
++---------------------------------------------------+
+```
+
+---
+
+### Modul 5.2: Client Collaboration Suite
+
+#### Tujuan
+Menyediakan alur kerja *proofing* dan persetujuan (*approval*) yang terstruktur antara tim agensi dan klien. Menggantikan komunikasi berantakan melalui email atau WhatsApp dengan sistem komentar langsung pada desain, versi riwayat, dan tombol persetujuan resmi.
+
+#### Alur Kerja (Workflow)
+
+1. **Berbagi Desain untuk Ditinjau (Dari Pilar 3):**
+   - Setelah desain selesai di **Template Lockdown Editor (Pilar 3)**, desainer mengklik **"Bagikan untuk Ditinjau"**.
+   - Sistem menghasilkan **tautan tinjauan unik** yang dapat dikirim ke klien (via email atau langsung dari platform).
+
+2. **Pengalaman Klien (Portal Tinjauan):**
+   - Klien membuka tautan. **Tidak perlu login** (opsional, bisa diatur).
+   - Klien melihat desain di tengah layar dengan antarmuka yang bersih.
+   - Klien dapat:
+     - **Memberikan Komentar:** Klik di mana saja pada desain untuk menambahkan komentar titik-spesifik (mirip Figma).
+     - **Melihat Versi:** Jika desainer mengunggah revisi, klien dapat melihat versi sebelumnya.
+     - **Memberikan Persetujuan:** Tombol hijau besar **"Setujui Desain"**. Setelah diklik, status berubah menjadi **"Disetujui"** dan tidak dapat diedit lebih lanjut tanpa membatalkan persetujuan.
+
+3. **Notifikasi Tim Agensi:**
+   - Setiap kali klien menambahkan komentar atau menyetujui, notifikasi muncul di **Command Center** agensi dan (opsional) email.
+   - Desainer dapat membalas komentar langsung di platform, dan klien akan mendapatkan notifikasi balasan.
+
+4. **Riwayat Persetujuan (Audit Trail):**
+   - Setiap tindakan (komentar, revisi, persetujuan) tercatat dengan *timestamp* dan nama pengguna.
+   - Berguna untuk menghindari sengketa di kemudian hari ("Klien sudah setuju kok tanggal X").
+
+#### Konsep UI/UX
+
+**Tampilan Tinjauan Klien (Client View):**
+
+```text
++-----------------------------------------------------------------------+
+|  [Logo Agensi]  Hening Coffee - Tinjauan Desain Instagram Post        |
+|                                                       [👤 Klien]      |
++-----------------------------------------------------------------------+
+|  +---------------------------+  +-----------------------------------+ |
+|  |                           |  | KOMENTAR                          | |
+|  |     [DESAIN BESAR]        |  | [💬] Klien: "Bisa font judulnya   | |
+|  |     (Dengan titik-titik   |  |      diperbesar sedikit?"         | |
+|  |      komentar yang bisa   |  |      2 menit lalu                 | |
+|  |      diklik)              |  |                                   | |
+|  |                           |  | [💬] Desainer: "Sudah diperbesar   | |
+|  |                           |  |      ya, silakan dicek."          | |
+|  |                           |  |      1 jam lalu                   | |
+|  |                           |  |                                   | |
+|  |                           |  | [Tulis komentar...]          [➤]  | |
+|  +---------------------------+  +-----------------------------------+ |
+|                                                                       |
+|  [◀ Versi 1] [Versi 2 (Terkini) ▶]                                   |
+|                                                                       |
+|  Status: Menunggu Persetujuan                                         |
+|  [✓ SETUJUI DESAIN]  (Tombol besar berwarna hijau)                    |
++-----------------------------------------------------------------------+
+```
+
+**Tampilan Riwayat Versi & Persetujuan (Modal):**
+
+```text
++---------------------------------------------------+
+|  RIWAYAT DESAIN - "Instagram Post 12 April"       |
++---------------------------------------------------+
+|  Versi 2 (Terkini) - Diunggah 12 Apr 10:30        |
+|  - Desainer: Memperbesar font judul.              |
+|  - Status: Menunggu Persetujuan                   |
+|                                                   |
+|  Versi 1 - Diunggah 12 Apr 09:00                 |
+|  - Desainer: Konsep awal.                         |
+|  - Status: Direvisi                               |
+|                                                   |
+|  Log Persetujuan:                                 |
+|  (Belum ada persetujuan final)                    |
+|                                                   |
+|  [ Kembali ]                                      |
++---------------------------------------------------+
+```
+
+**Notifikasi di Command Center Agensi:**
+
+```text
++---------------------------------------------------+
+|  🔔 NOTIFIKASI                                    |
++---------------------------------------------------+
+|  Hening Coffee: Klien berkomentar di "IG Post"    |
+|  "Bisa font judulnya diperbesar?" - 2 menit lalu  |
+|  [ Lihat ]                                        |
+|                                                   |
+|  Bloom Skincare: Desain "Banner Website" DISETUJUI|
+|  - Baru saja                                      |
+|  [ Lihat ]                                        |
+|                                                   |
+|  TechNusa: Laporan Brand Health siap diunduh      |
+|  - 1 jam lalu                                     |
+|  [ Unduh ]                                        |
++---------------------------------------------------+
+```
+
+---
+
+### Modul 5.3: White-Label Reporting
+
+#### Tujuan
+Memungkinkan agensi untuk menghasilkan laporan profesional (PDF) yang sepenuhnya mencerminkan identitas merek agensi, **tanpa menyebut BrandOS**. Fitur ini penting untuk menjaga citra profesional agensi di mata klien dan memudahkan *upselling* layanan.
+
+#### Alur Kerja (Workflow)
+
+1. **Setup White-Label (Sekali di Pengaturan Agensi):**
+   - Buka **Settings > Agency Profile > White-Label**.
+   - Unggah **Logo Agensi** (untuk header laporan).
+   - Pilih **Warna Primer Agensi** (digunakan untuk judul, garis, tombol di PDF).
+   - Atur **Footer Text** (misal: "© 2026 Digital Agency. All Rights Reserved.").
+
+2. **Menghasilkan Laporan:**
+   - Dari modul mana pun yang memiliki fitur laporan (**Brand Consistency Auditor** di Pilar 2, **Brand Impact Analytics** di Pilar 4), klik **"Ekspor Laporan PDF"**.
+   - Sistem akan merender laporan dengan:
+     - **Header:** Logo Agensi (bukan BrandOS).
+     - **Konten:** Data dari modul terkait.
+     - **Footer:** Teks kustom agensi.
+     - **Skema Warna:** Warna primer agensi untuk aksen.
+
+3. **Jenis Laporan yang Didukung:**
+   - **Laporan Brand Health:** Ringkasan skor, analisis piramida resonansi, rekomendasi.
+   - **Laporan Audit Konsistensi:** Temuan inkonsistensi visual/verbal dengan *screenshot*.
+   - **Laporan Aktivitas Bulanan:** Ringkasan konten yang dipublikasikan, *engagement*, pertumbuhan pengikut.
+
+4. **Opsi Pengiriman:**
+   - **Unduh PDF:** Simpan ke komputer.
+   - **Kirim Email ke Klien:** Kirim langsung dari platform dengan subjek dan isi email kustom.
+   - **Jadwalkan Laporan Otomatis:** Atur pengiriman laporan bulanan otomatis ke klien.
+
+#### Konsep UI/UX
+
+**Halaman Pengaturan White-Label:**
+
+```text
++---------------------------------------------------------------+
+|  WHITE-LABEL SETTINGS - Sesuaikan Laporan Klien               |
++---------------------------------------------------------------+
+|                                                               |
+|  Logo Laporan (Header):                                       |
+|  [ Upload Logo ]  (Rekomendasi: PNG, tinggi 40-60px)          |
+|  +-------------------------------------------------------+    |
+|  | [Preview Logo Agensi]                                 |    |
+|  +-------------------------------------------------------+    |
+|                                                               |
+|  Warna Aksen Laporan:                                         |
+|  [ Color Picker: #FF5733 ]                                    |
+|  (Digunakan untuk judul bagian, garis pemisah, dan highlight) |
+|                                                               |
+|  Footer Laporan:                                              |
+|  [ Dipersembahkan oleh [Nama Agensi]                        ] |
+|  [ Alamat Website / Kontak (Opsional)                       ] |
+|                                                               |
+|  Preview Cepat:                                               |
+|  +-------------------------------------------------------+    |
+|  | [Header dengan Logo Agensi]                           |    |
+|  |                                                       |    |
+|  | LAPORAN BRAND HEALTH (Judul warna #FF5733)            |    |
+|  | ======================================= (Garis #FF5733)|    |
+|  |                                                       |    |
+|  | [Isi laporan contoh...]                               |    |
+|  |                                                       |    |
+|  | [Footer Kustom]                                       |    |
+|  +-------------------------------------------------------+    |
+|                                                               |
+|  [ Simpan Pengaturan ]                                        |
++---------------------------------------------------------------+
+```
+
+**Modal Ekspor/Kirim Laporan:**
+
+```text
++---------------------------------------------------+
+|  EKSPOR LAPORAN - Hening Coffee                   |
++---------------------------------------------------+
+|  Jenis Laporan: Brand Health Report (April 2026)  |
+|                                                   |
+|  Opsi:                                            |
+|  [ ] Sertakan halaman rekomendasi AI              |
+|  [ ] Sertakan data kompetitif                     |
+|                                                   |
+|  Kirim ke:                                        |
+|  [✓] Unduh PDF                                    |
+|  [ ] Kirim Email ke Klien:                        |
+|      [emailklien@domain.com]                      |
+|      Subjek: [Laporan Brand Health April 2026]    |
+|      Pesan: (Opsional)                            |
+|                                                   |
+|  [ Batalkan ]  [ Hasilkan & Unduh/Kirim ]         |
++---------------------------------------------------+
+```
+
+**Contoh Tampilan PDF Laporan White-Label:**
+
+```text
++---------------------------------------------------------------+
+|  [LOGO AGENSI]                                                |
+|                                                               |
+|  LAPORAN BRAND HEALTH                                         |
+|  Untuk: Hening Coffee                                         |
+|  Periode: 1 April - 30 April 2026                             |
+|                                                               |
+|  =====================================================        |
+|                                                               |
+|  RINGKASAN EKSEKUTIF                                          |
+|  Skor Brand Health: 78/100 (Meningkat +3 dari Maret)          |
+|                                                               |
+|  ... (Isi laporan dengan visualisasi data) ...                |
+|                                                               |
+|  =====================================================        |
+|                                                               |
+|  © 2026 Digital Agency. Dipersembahkan untuk Hening Coffee.   |
+|  (Tanpa menyebut BrandOS)                                     |
++---------------------------------------------------------------+
+```
+
+---
+
+### Modul 5.4: Client Portal & Permissions
+
+#### Tujuan
+Memberikan setiap klien sebuah portal khusus yang dapat mereka akses dengan login mereka sendiri. Portal ini hanya menampilkan *workspace* klien tersebut dengan antarmuka yang disederhanakan dan izin terbatas (hanya lihat, unduh aset terkunci, dan beri komentar). Ini meningkatkan profesionalisme dan mengurangi beban administratif agensi.
+
+#### Alur Kerja (Workflow)
+
+1. **Mengundang Klien (Dari Command Center):**
+   - Di kartu klien, klik **"Kelola Akses"** > **"Undang Klien"**.
+   - Masukkan email klien dan pilih peran: **Client Viewer** (hanya lihat) atau **Client Editor** (bisa unggah aset? opsional).
+   - Sistem mengirim email undangan dengan tautan untuk membuat kata sandi.
+
+2. **Pengalaman Klien Setelah Login:**
+   - Klien login ke `app.brandos.com/client`.
+   - Mereka **hanya melihat** *workspace* milik mereka sendiri.
+   - Menu yang tersedia disederhanakan:
+     - **Brand Assets:** Halaman untuk melihat dan mengunduh aset dengan **Locked Asset Delivery** (Pilar 2).
+     - **Living Brand Guidelines:** Panduan merek interaktif (Pilar 2).
+     - **Design Approvals:** Halaman khusus untuk melihat daftar desain yang menunggu persetujuan (Modul 5.2).
+     - **Reports:** Arsip laporan bulanan yang dikirim agensi.
+   - Mereka **tidak dapat**:
+     - Melihat menu Pilar 1 (Strategi) atau Pilar 7 (Visual Intelligence) yang kompleks.
+     - Mengubah pengaturan *workspace*.
+     - Mengunduh file sumber mentah.
+
+3. **Manajemen Izin Terperinci (Untuk Tim Agensi Internal):**
+   - **Agency Admin:** Akses penuh ke semua *workspace* dan pengaturan agensi.
+   - **Agency Manager:** Akses penuh ke *workspace* yang ditugaskan, tidak bisa mengubah pengaturan agensi.
+   - **Designer:** Akses ke Pilar 3 (Editor) dan DAM *workspace* yang ditugaskan, tidak bisa menghapus aset kunci.
+
+#### Konsep UI/UX
+
+**Tampilan Portal Klien (Setelah Login):**
+
+```text
++-----------------------------------------------------------------------+
+|  [Logo BrandOS atau Logo Agensi?]   Halo, Hening Coffee!      [👤]    |
++-----------------------------------------------------------------------+
+|  [ Brand Assets ]  [ Panduan Merek ]  [ Persetujuan ]  [ Laporan ]    |
++-----------------------------------------------------------------------+
+|                                                                       |
+|  SELAMAT DATANG, HENING COFFEE!                                       |
+|                                                                       |
+|  Brand Health Score Anda: 78/100 🟡                                   |
+|  (Laporan terbaru tersedia di tab Laporan)                            |
+|                                                                       |
+|  Tindakan Cepat:                                                      |
+|  +--------------------------------+  +--------------------------------+ |
+|  | 📁 Unduh Logo                 |  | ✅ Lihat Persetujuan           | |
+|  | (Format terkunci siap pakai)  |  | (2 desain menunggu)            | |
+|  +--------------------------------+  +--------------------------------+ |
+|                                                                       |
+|  Aktivitas Terbaru dari Agensi:                                       |
+|  • 12 Apr: Desain Instagram Post baru siap ditinjau.                  |
+|  • 10 Apr: Laporan Brand Health April telah diunggah.                 |
+|                                                                       |
++-----------------------------------------------------------------------+
+```
+
+**Tampilan Manajemen Izin (Admin Agensi):**
+
+```text
++---------------------------------------------------+
+|  KELOLA AKSES - Hening Coffee                     |
++---------------------------------------------------+
+|                                                   |
+|  TIM INTERNAL (Agensi):                           |
+|  +-------------------------------------------+    |
+|  | 👤 Andi (Admin) - Akses Penuh             |    |
+|  | 👤 Budi (Designer) - Editor & DAM         |    |
+|  | [ + Tambah Anggota Tim ]                  |    |
+|  +-------------------------------------------+    |
+|                                                   |
+|  KLIEN:                                           |
+|  +-------------------------------------------+    |
+|  | 👤 marketing@heningcoffee.com             |    |
+|  | Peran: Client Viewer                      |    |
+|  | Status: Aktif                             |    |
+|  | [ Kirim Ulang Undangan ] [ Hapus Akses ]  |    |
+|  +-------------------------------------------+    |
+|  [ + Undang Klien Baru ]                          |
+|                                                   |
+|  [ Simpan Perubahan ]                             |
++---------------------------------------------------+
+```
+
+---
+
+### Modul 5.5: Subscription & Billing Management (Opsional - P2)
+
+#### Tujuan
+Memungkinkan agensi untuk mengelola langganan dan penagihan klien langsung dari dalam platform (jika BrandOS menawarkan model *reseller* atau jika agensi ingin menagih klien untuk akses portal). Ini mengintegrasikan manajemen keuangan dengan manajemen proyek.
+
+#### Alur Kerja (Workflow)
+
+1. **Integrasi dengan Payment Gateway:**
+   - Agensi menghubungkan akun Stripe atau Xendit mereka di **Settings > Billing**.
+   - BrandOS tidak memproses pembayaran sendiri, hanya menyediakan *interface* untuk membuat *invoice* dan melacak status pembayaran.
+
+2. **Membuat Paket Langganan (Produk):**
+   - Agensi membuat paket layanan (misal: "Paket Branding Bulanan - Rp 5.000.000").
+   - Tentukan fitur yang termasuk (secara manual, tidak otomatis membatasi fitur platform).
+
+3. **Menetapkan Langganan ke Klien:**
+   - Saat membuat *workspace* klien baru, pilih paket langganan.
+   - Sistem secara otomatis membuat *invoice* bulanan dan mengirimkannya ke email klien (opsional).
+   - Status pembayaran terlihat di Command Center (Lunas, Menunggu, Jatuh Tempo).
+
+4. **Notifikasi Jatuh Tempo:**
+   - Sistem mengingatkan agensi jika ada *invoice* klien yang belum dibayar.
+   - (Opsional) Sistem dapat menonaktifkan akses klien ke portal jika pembayaran terlambat (fitur *suspend*).
+
+#### Konsep UI/UX
+
+**Tampilan Dasbor Keuangan Agensi (Opsional):**
+
+```text
++---------------------------------------------------+
+|  BILLING & SUBSCRIPTIONS                          |
++---------------------------------------------------+
+|  Pendapatan Bulan Ini: Rp 25.000.000              |
+|  Tertunda: Rp 5.000.000                           |
+|                                                   |
+|  DAFTAR KLIEN & STATUS PEMBAYARAN                 |
+|  +-------------------------------------------+    |
+|  | Hening Coffee - Paket Pro                 |    |
+|  | Invoice Apr: Rp 5.000.000 - Lunas ✅       |    |
+|  | Invoice Mei: Rp 5.000.000 - Menunggu ⏳    |    |
+|  +-------------------------------------------+    |
+|  | Bloom Skincare - Paket Basic              |    |
+|  | Invoice Apr: Rp 2.500.000 - Lunas ✅       |    |
+|  +-------------------------------------------+    |
+|                                                   |
+|  [ Buat Invoice Manual ]  [ Atur Paket Layanan ]  |
++---------------------------------------------------+
+```
+
+---
+
+### 6. Integrasi Antar Modul dalam Pilar 5
+
+```mermaid
+graph TD
+    A[Multi-Brand Command Center] -->|Masuk ke| B[Workspace Klien]
+    A -->|Undang klien| D[Client Portal]
+    B -->|Bagikan desain| C[Client Collaboration Suite]
+    C -->|Klien akses via| D
+    C -->|Setujui desain| B
+    E[White-Label Reporting] -->|Ambil data dari| F[Pilar 2 & Pilar 4]
+    E -->|Kirim ke klien via| D
+    G[Subscription Management] -->|Tagih klien| A
+```
+
+### 7. Integrasi dengan Pilar Lain
+
+| Dari Pilar 5 | Ke Pilar Lain | Fungsi |
+| :--- | :--- | :--- |
+| **Command Center** | **Semua Pilar** | Akses cepat ke *workspace* klien mana pun. |
+| **Client Portal** | **Pilar 2 (DAM & Guidelines)** | Tampilan yang disederhanakan untuk klien mengunduh aset dan melihat panduan. |
+| **Collaboration Suite** | **Pilar 3 (Expression Studio)** | Alur *proofing* langsung dari editor desain. |
+| **White-Label Reporting** | **Pilar 2 (Auditor) & Pilar 4 (Analytics)** | Mengambil data audit dan analitik untuk laporan klien. |

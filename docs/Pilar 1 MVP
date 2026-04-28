@@ -1,0 +1,103 @@
+Baik. Saya setuju dengan arahan ini. Memisahkan Pilar 0 dan Pilar 1 hanya akan menciptakan dua produk yang terasa terpisah. Strategi yang lebih solid adalah **menyatukannya di bawah payung "Brand Genesis Lab" sebagai satu Pilar MVP tunggal**.
+
+Dengan pendekatan ini, **Pilar 1: Brand Genesis Lab** adalah MVP kita. Pilar ini memiliki **dua pintu masuk** ke tujuan yang sama:
+
+1.  **Pintu Wawancara (Discovery Mode):** Untuk 90% pengguna awam. Mereka ngobrol, sistem mengisi kanvas di belakang layar.
+2.  **Pintu Manual (Expert Mode):** Untuk 10% pengguna yang sudah tahu teori. Mereka langsung isi kanvas.
+
+Keduanya mengisi **satu database yang sama** dan menghasilkan **output yang sama**.
+
+Berikut adalah **Dokumen Spesifikasi Pilar 1 (Revisi MVP - Terpertajam)** yang telah disatukan.
+
+---
+
+## 📁 Pilar 1: Brand Genesis Lab (MVP Lengkap BrandOS)
+
+### 1. Tujuan Pilar (Revisi)
+
+Menyediakan **lingkungan tunggal** bagi pengguna untuk merumuskan fondasi strategis merek mereka secara premium. Pilar ini mengakomodasi dua tipe pengguna secara mulus:
+- **Pemula:** Dipandu melalui **AI Brand Strategist (Challenger Mode)** yang hasilnya otomatis mengisi kanvas strategi.
+- **Ahli:** Dapat langsung melompat ke **Kanvas Manual** (Golden Circle, Brand Key, dll.) untuk mengisi atau mengedit secara presisi.
+
+**Visi Integrasi:** Tidak ada lagi pemisahan antara "Hasil Wawancara" dan "Kanvas Manual". **Kanvas Manual adalah tampilan edit dari hasil wawancara, dan hasil wawancara adalah versi *auto-filled* dari kanvas.**
+
+### 2. Arsitektur Modul & Alur Pengguna
+
+MVP ini memiliki satu urutan logis, tetapi dengan fleksibilitas masuk di langkah mana pun:
+
+| No. | Nama Modul | Tipe Pengguna | Deskripsi Singkat |
+| :-- | :--- | :--- | :--- |
+| 1 | **Brand Discovery Chat (Challenger Mode)** | **Pemula** | Pintu masuk wawancara AI yang pintar dan kritis. |
+| 2 | **Strategy Dashboard (The Control Center)** | **Semua** | Landing page DNA Merek dengan visualisasi interaktif. |
+| 3 | **Kanvas Manual (7 Layer)** | **Ahli / Editor** | Golden Circle, Brand Key, Archetypes, VP Canvas, dll. |
+| 4 | **The Genesis Report (Premium Output)** | **Semua** | Output final berupa PDF/Markdown premium siap pakai. |
+
+### 3. Fitur Unggulan "Terpertajam" (High Value)
+
+#### A. AI Challenger Mode (Bukan Chatbot Biasa)
+- **Socratic Questioning:** AI akan menantang jawaban generik (misal: "Mengapa Anda bilang 'Kualitas Terbaik'? Apa buktinya?").
+- **Expert Injections:** Menyuntikkan teori pakar (Aaker/Kapferer) secara halus ke dalam percakapan.
+- **Context-Aware:** AI mengingat detail dari awal chat untuk membangun narasi yang konsisten.
+
+#### B. The Genesis Report (Output Berbayar)
+- **Premium PDF Template:** Desain layout sekelas agensi branding global.
+- **Dynamic Visuals:** Menyertakan diagram interaktif (Mermaid/SVG) di dalam dashboard dan PDF.
+- **Executive Summary:** Narasi strategis yang ditulis secara elegan oleh AI untuk dipresentasikan ke investor/klien.
+
+#### C. Visual DNA Bridge (Jembatan ke Eksekusi)
+- **Technical Brief for Designers:** Prompt teknis yang mendetail untuk desainer (Tipografi, Warna, Mood).
+- **Moodboard Preview:** Preview instan atmosfir visual berdasarkan DNA yang dirumuskan.
+
+### 4. Skema Database Terpadu (Single Source of Truth)
+
+```sql
+-- Tabel brand_strategy (Ringkasan)
+CREATE TABLE brand_strategy (
+    workspace_id UUID PRIMARY KEY,
+    
+    -- Core Identity
+    brand_name VARCHAR(255),
+    brand_essence VARCHAR(255),
+    brand_mantra VARCHAR(255),
+    why_statement TEXT,
+    
+    -- Archetype
+    archetype_primary VARCHAR(50),
+    archetype_secondary VARCHAR(50),
+    
+    -- Visual & Voice DNA
+    visual_keywords TEXT[], -- ['Bold', 'Minimalist', 'Luxe']
+    tone_of_voice TEXT,     -- Karakteristik verbal
+    design_brief_summary TEXT, -- Brief teknis untuk desainer
+    
+    -- Timestamps & Source Tracking
+    updated_at TIMESTAMP,
+    updated_by_mode VARCHAR(20) -- 'discovery' atau 'manual'
+);
+```
+
+### 5. Modul 1.1: Brand Discovery Chat (Challenger Mode)
+
+**Tampilan Awal (Sebelum Chat):**
+Memberikan opsi "Curhat Dulu" dengan penekanan pada AI Strategist yang akan "menggali" ide user.
+
+### 6. Modul 1.2: Strategy Dashboard (The Control Center)
+
+Halaman ini adalah **Pusat Kendali**.
+- **Interactive Frameworks:** Visualisasi interaktif untuk Golden Circle dan Kapferer Prism.
+- **Status Badge:** ✨ **AI-Generated** atau ✏️ **Manual**.
+- **Action Box:** Tombol "Export Premium Report" dan "Generate Visual Brief".
+
+### 7. Peta Jalan MVP (Revisi - 6 Minggu)
+
+| Minggu | Fokus | *Deliverables* |
+| :--- | :--- | :--- |
+| **Minggu 1-2** | **Database & AI Core** | Setup DB & Prompt Engineering "Challenger Mode". |
+| **Minggu 3** | **Discovery Chat UI** | Interface chat dengan integrasi OpenAI/Claude. |
+| **Minggu 4** | **Dashboard & Visuals** | UI Dashboard interaktif & visualisasi framework. |
+| **Minggu 5** | **The Genesis Report** | Engine PDF Export dengan template premium. |
+| **Minggu 6** | **Polish & Visual Bridge** | Integrasi Visual DNA Bridge & Testing. |
+
+---
+
+Dengan penajaman ini, **Pilar 1 bukan sekadar alat pengisi formulir**, melainkan **partner strategis** yang memberikan output bernilai tinggi. User tidak hanya mendapatkan data, tapi mendapatkan **kejelasan (Clarity)** dan **kredibilitas (Credibility)** yang layak dibayar.

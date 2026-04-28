@@ -1,0 +1,250 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// --------------------------------------
+// CORE MODELS
+// --------------------------------------
+
+model Client {
+  id             String      @id @default(uuid())
+  name           String
+  status         String      @default("active")
+  workspaces     Workspace[]
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+}
+
+model Workspace {
+  id        String   @id @default(uuid())
+  clientId  String?
+  client    Client?  @relation(fields: [clientId], references: [id])
+  name      String
+  industry  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  strategies    BrandStrategy[]
+  assets        Asset[]
+  templates     Template[]
+  aiCopies      AICopy[]
+  contentQueues ContentQueue[]
+  analytics     AnalyticsData[]
+  visualIdentity VisualIdentity?
+  brandRules     BrandRule[]
+  auditReports   AuditReport[]
+  discoveryLogs  DiscoveryLog[]
+}
+
+model DiscoveryLog {
+  id          String    @id @default(uuid())
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  role        String    // 'ai' or 'user'
+  content     String
+  createdAt   DateTime  @default(now())
+}
+
+// --------------------------------------
+// PILAR 1: BRAND GENESIS LAB
+// --------------------------------------
+
+model BrandStrategy {
+  id             String    @id @default(uuid())
+  workspaceId    String
+  workspace      Workspace @relation(fields: [workspaceId], references: [id])
+  
+  brandName      String?
+  brandEssence   String?
+  brandMantra    String?
+  whyStatement   String?
+  
+  archetypePrimary   String?
+  archetypeSecondary String?
+  
+  coreValues     String[]
+  toneOfVoice    String?
+  
+  goldenCircle   Json?     // { why, how, what }
+  brandKey       Json?     // 9 elements
+  vpCanvas       Json?     // { customerProfile: {}, valueMap: {} }
+  kapfererPrism  Json?     // { physique, personality, culture, relationship, reflection, selfImage }
+  
+  executiveSummary String?
+  
+  updatedAt      DateTime  @updatedAt
+  updatedByMode  String?   // 'discovery' or 'manual'
+}
+
+// --------------------------------------
+// PILAR 2: BRAND FORTRESS (DAM)
+// --------------------------------------
+
+model Asset {
+  id             String    @id @default(uuid())
+  workspaceId    String
+  workspace      Workspace @relation(fields: [workspaceId], references: [id])
+  
+  fileName       String
+  s3Key          String
+  mimeType       String
+  fileSize       Int?
+  
+  tags           String[]
+  aiColors       Json?     // [{ hex, ratio }]
+  
+  isLocked       Boolean   @default(false)
+  lockedSettings Json?     // { clearSpace, allowedFormats }
+  
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  auditLogs      AssetAuditLog[]
+}
+
+model AssetAuditLog {
+  id        String   @id @default(uuid())
+  assetId   String
+  asset     Asset    @relation(fields: [assetId], references: [id])
+  userId    String?
+  action    String
+  format    String?
+  timestamp DateTime @default(now())
+}
+
+// --------------------------------------
+// PILAR 3: BRAND EXPRESSION STUDIO
+// --------------------------------------
+
+model Template {
+  id             String    @id @default(uuid())
+  workspaceId    String
+  workspace      Workspace @relation(fields: [workspaceId], references: [id])
+  
+  name           String
+  thumbnailUrl   String?
+  category       String?
+  
+  canvasData     Json?
+  lockedElements Json?
+  
+  createdAt      DateTime  @default(now())
+}
+
+model AICopy {
+  id             String    @id @default(uuid())
+  workspaceId    String
+  workspace      Workspace @relation(fields: [workspaceId], references: [id])
+  
+  title          String?
+  content        String?
+  tone           String?
+  platform       String?
+  
+  createdAt      DateTime  @default(now())
+}
+
+// --------------------------------------
+// PILAR 4: BRAND AMPLIFIER
+// --------------------------------------
+
+model ContentQueue {
+  id             String    @id @default(uuid())
+  workspaceId    String
+  workspace      Workspace @relation(fields: [workspaceId], references: [id])
+  
+  content        String
+  platform       String    // 'instagram', 'linkedin', etc.
+  scheduledFor   DateTime?
+  status         String    @default("draft") // draft, scheduled, published
+  
+  aiInsights     Json?
+  
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model AnalyticsData {
+  id             String    @id @default(uuid())
+  workspaceId    String
+  workspace      Workspace @relation(fields: [workspaceId], references: [id])
+  
+  platform       String
+  metrics        Json      // { followers: 1000, engagement: 5.2, reach: 5000 }
+  date           DateTime  @default(now())
+}
+
+// --------------------------------------
+// PILAR 7: VISUAL INTELLIGENCE
+// --------------------------------------
+
+model VisualIdentity {
+  id              String    @id @default(uuid())
+  workspaceId     String    @unique
+  workspace       Workspace @relation(fields: [workspaceId], references: [id])
+
+  // Aaker Canvas Data
+  aakerProduct      String?
+  aakerOrganization String?
+  aakerPerson       String?
+  aakerSymbol       String?
+  visualDnaKeywords String[]
+
+  // Kapferer Prism Data
+  prismPhysique     String?
+  prismPersonality  String?
+  prismCulture      String?
+  prismRelationship String?
+  prismReflection   String?
+  prismSelfImage    String?
+
+  // AI-Generated Visual System
+  colorPalette      Json?   // { primary, secondary, accent, neutral1, neutral2 }
+  typography        Json?   // { heading: { family, weight }, body: { family, weight } }
+  moodboardUrls     String[]
+
+  updatedAt DateTime @updatedAt
+}
+
+// --------------------------------------
+// PILAR 2: BRAND RULES & AUDITS
+// --------------------------------------
+
+model BrandRule {
+  id              String    @id @default(uuid())
+  workspaceId     String
+  workspace       Workspace @relation(fields: [workspaceId], references: [id])
+
+  assetId         String?   // null = workspace-wide rule
+  ruleType        String    // "clear_space", "allowed_colors", "allowed_formats", "min_size"
+  ruleValue       Json      // { percentage: 10 } or { colors: ["#1A2B3C", "#FFFFFF"] }
+
+  createdAt       DateTime  @default(now())
+}
+
+model AuditReport {
+  id              String    @id @default(uuid())
+  workspaceId     String
+  workspace       Workspace @relation(fields: [workspaceId], references: [id])
+
+  targetUrl       String
+  targetType      String    // "website", "instagram", "linkedin"
+  score           Int       // 0-100
+  findings        Json      // [{ severity, category, description, screenshot? }]
+  colorAnalysis   Json?     // { found: [...], reference: [...], violations: [...] }
+  fontAnalysis    Json?
+  toneAnalysis    Json?
+
+  status          String    @default("pending")
+  createdAt       DateTime  @default(now())
+}
+
+

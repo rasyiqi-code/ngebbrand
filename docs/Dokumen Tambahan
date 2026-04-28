@@ -1,0 +1,335 @@
+Berikut adalah tiga dokumen pelengkap untuk melengkapi spesifikasi **BrandOS** secara menyeluruh:
+
+1. **Ringkasan Eksekutif (Executive Summary)** – untuk presentasi ke tim atau investor.
+2. **Dokumen Arsitektur Teknis (Technical Architecture Document)** – untuk tim *engineering*.
+3. **Dokumen Spesifikasi Tambahan** – mencakup *User Onboarding Flow*, *Security & Compliance*, dan *Integration Guide*.
+
+---
+
+# 📄 DOKUMEN 1: RINGKASAN EKSEKUTIF (EXECUTIVE SUMMARY)
+
+## BrandOS – The All-in-One Brand Operating System
+
+### 1. Visi Produk
+**BrandOS** adalah platform SaaS *all-in-one* yang menyatukan seluruh siklus hidup merek—dari perumusan strategi, manajemen aset, pembuatan konten, distribusi, hingga analisis performa—dalam satu ekosistem terpadu. Berbeda dengan alat desain generik (Canva) atau alat manajemen aset (Frontify), **BrandOS dibangun di atas fondasi teori branding dari para pakar dunia** (David Aaker, Jean-Noël Kapferer, Kevin Keller, Simon Sinek, dll.) dan diperkuat oleh lapisan **AI Co-Strategist** yang memastikan setiap keputusan selaras dengan DNA strategis merek.
+
+### 2. Masalah yang Dipecahkan
+
+| Masalah Utama | Dampak | Solusi BrandOS |
+| :--- | :--- | :--- |
+| **Brand Guidelines statis (PDF)** tidak dipatuhi tim internal/klien. | Inkonsistensi visual, kerusakan citra merek. | **Living Brand Guidelines** interaktif + **Locked Asset Delivery**. |
+| **Proses branding terfragmentasi** (strategi di Miro, aset di Drive, desain di Canva). | Waktu terbuang, data tidak terhubung. | Satu platform terintegrasi dengan 7 pilar. |
+| **Klien/Agensi sulit membuktikan ROI branding.** | Sulit *upselling* atau mempertahankan klien. | **Brand Health Score** & **White-Label Reporting**. |
+| **Tim non-desainer membuat konten tidak *on-brand*.** | Kesalahan fatal yang merusak profesionalisme. | **Template Lockdown Editor** (elemen merek terkunci). |
+
+### 3. Arsitektur 7 Pilar (Ringkasan)
+
+| Pilar | Nama | Fungsi Singkat |
+| :--- | :--- | :--- |
+| **P1** | **Brand Genesis Lab** | Perumusan strategi merek dengan kanvas pakar (Golden Circle, Brand Key, Archetypes). |
+| **P2** | **Brand Fortress** | Manajemen aset digital (DAM) dengan *Locked Asset Delivery* & Auditor Konsistensi. |
+| **P3** | **Brand Expression Studio** | Editor desain terkunci + AI *copywriting* untuk pembuatan konten cepat. |
+| **P4** | **Brand Amplifier** | Kalender konten terpadu, *publishing* multi-platform, & Analitik *Brand Resonance*. |
+| **P5** | **Brand Agency Hub** | Manajemen multi-klien, portal klien, kolaborasi, & laporan *white-label*. |
+| **P6** | **Brand AI Cortex** | Lapisan AI *context-aware* yang melandasi semua fitur cerdas. |
+| **P7** | **Brand Visual Intelligence** | Generator palet warna, tipografi, & *moodboard* berbasis teori Aaker & Kapferer. |
+
+### 4. Diferensiasi Utama
+
+- **AI Co-Strategist yang Paham Teori Pakar**: Bukan sekadar *chatbot* generik, tetapi AI yang telah di-*fine-tune* dengan korpus buku dan jurnal para pakar branding.
+- **Pencegahan Kesalahan Merek Proaktif**: Sistem tidak hanya menyediakan alat, tetapi **mencegah** penggunaan aset yang salah melalui mekanisme *locking*.
+- **Alur Kerja Mulus untuk Agensi**: Dari *onboarding* klien, *proofing* desain, hingga laporan bulanan *white-label*—semua dalam satu platform.
+
+### 5. Target Pasar
+
+| Segmen | Kebutuhan Utama | Nilai Jual BrandOS |
+| :--- | :--- | :--- |
+| **Agensi Branding/Kreatif** | Efisiensi operasional, *upselling* ke klien, profesionalisme. | **Pilar 5 (Agency Hub)** – Manajemen multi-klien & laporan *white-label*. |
+| **Tim Merek Internal (UKM – Enterprise)** | Menjaga konsistensi di seluruh kanal, memberdayakan tim non-desainer. | **Pilar 2 & 3** – *Locked Assets* & Editor Terkunci. |
+| **Founder UKM** | Membangun fondasi merek dengan biaya terjangkau. | **Pilar 1 & 7** – Kanvas strategi & generator visual otomatis. |
+
+### 6. Model Bisnis (SaaS)
+
+| Paket | Target | Fitur Unggulan | Harga (Ilustratif) |
+| :--- | :--- | :--- | :--- |
+| **Free** | Individu, *Freelancer* | 1 *workspace*, akses Pilar 1 terbatas, 5 aset DAM. | Gratis |
+| **Pro** | UKM, Tim Internal | 1 *workspace*, akses penuh P1-P4, DAM 500 aset. | $29/bulan |
+| **Agency** | Agensi | Hingga 20 *workspace*, akses penuh P5, laporan *white-label*. | $99/bulan |
+| **Enterprise** | Perusahaan Besar | *Unlimited workspace*, *Single Sign-On*, *dedicated support*. | *Custom* |
+
+### 7. Peta Jalan Singkat
+
+| Fase | Durasi | Fokus |
+| :--- | :--- | :--- |
+| **MVP** | 4 Bulan | Pilar 2 (DAM & Auditor) + Pilar 7 Dasar (Kanvas Kapferer). |
+| **Fase 2** | 3 Bulan | Pilar 1 (Genesis Lab) + Pilar 5 (Agency Hub dasar). |
+| **Fase 3** | 3 Bulan | Pilar 3 (Editor Terkunci) + Pilar 4 (Kalender & *Publishing*). |
+| **Fase 4** | 3 Bulan | Integrasi AI penuh (Pilar 6) + Pilar 7 *Moodboard Generator*. |
+
+---
+
+# 📄 DOKUMEN 2: ARSITEKTUR TEKNIS (TECHNICAL ARCHITECTURE DOCUMENT)
+
+### 1. Gambaran Umum Arsitektur
+
+**BrandOS** dibangun dengan arsitektur **microservices** yang modular, memungkinkan pengembangan dan *deployment* independen untuk setiap pilar. Komunikasi antar-*service* menggunakan **REST API** dan **message queue (RabbitMQ)** untuk tugas-tugas asinkron.
+
+```text
+                                  +---------------------+
+                                  |     CDN / S3        |
+                                  | (Asset Storage)     |
+                                  +----------+----------+
+                                             |
++-------------+      +-------------+      +--v--+      +-------------+
+|   Client    +----->+  API Gateway+----->+ LB  +----->+  Services   |
+| (Web/Mobile)|      | (Kong/Nginx)|      |     |      | (Kubernetes)|
++-------------+      +-------------+      +--^--+      +-------------+
+                                             |
+                                  +----------+----------+
+                                  |   Message Queue     |
+                                  |   (RabbitMQ)        |
+                                  +---------------------+
+```
+
+### 2. Tech Stack (Usulan)
+
+| Lapisan | Teknologi | Alasan |
+| :--- | :--- | :--- |
+| **Frontend** | React 18 + TypeScript, Next.js (SSR), Tailwind CSS | Ekosistem matang, performa SSR untuk SEO, komponen *reusable*. |
+| **Backend API** | Python (FastAPI) + Node.js (NestJS) | FastAPI untuk *service* AI/ML, NestJS untuk logika bisnis umum. |
+| **Database** | PostgreSQL (data relasional), Redis (caching & session) | PostgreSQL untuk data terstruktur, Redis untuk performa tinggi. |
+| **Vector Database** | Pinecone / pgvector (PostgreSQL extension) | Untuk *Retrieval-Augmented Generation* (RAG) AI Co-Strategist. |
+| **File Storage** | AWS S3 / Cloudflare R2 | Penyimpanan aset DAM, dengan *Signed URL* untuk keamanan. |
+| **AI/ML** | OpenAI GPT-4o API, Google Vision API, Hugging Face (Model NLP) | GPT-4o untuk teks, Vision API untuk analisis gambar, *fine-tuned* model NLP. |
+| **Container Orchestration** | Kubernetes (k8s) | *Scalability* dan manajemen *microservices*. |
+| **CI/CD** | GitHub Actions, ArgoCD | Otomatisasi *deployment*. |
+| **Monitoring** | Prometheus + Grafana, Sentry | *Metrics* dan *error tracking*. |
+
+### 3. Arsitektur Database (Ringkasan)
+
+**PostgreSQL Schema (Tabel Utama):**
+
+```sql
+-- Workspace (Klien/Proyek)
+CREATE TABLE workspace (
+    id UUID PRIMARY KEY,
+    name VARCHAR(255),
+    industry VARCHAR(100),
+    agency_id UUID REFERENCES agency(id),
+    settings JSONB,
+    created_at TIMESTAMP
+);
+
+-- Brand Strategy Data (Pilar 1)
+CREATE TABLE brand_strategy (
+    workspace_id UUID REFERENCES workspace(id),
+    golden_circle JSONB, -- {why, how, what}
+    brand_key JSONB, -- 9 elemen Unilever
+    archetype VARCHAR(50),
+    brand_essence VARCHAR(255),
+    positioning_statement TEXT,
+    updated_at TIMESTAMP
+);
+
+-- Assets (Pilar 2 - DAM)
+CREATE TABLE asset (
+    id UUID PRIMARY KEY,
+    workspace_id UUID REFERENCES workspace(id),
+    file_name VARCHAR(255),
+    s3_key VARCHAR(512),
+    mime_type VARCHAR(100),
+    metadata JSONB, -- {width, height, tags, colors}
+    locked_settings JSONB, -- {clear_space, allowed_colors}
+    created_at TIMESTAMP
+);
+
+-- Content Calendar (Pilar 4)
+CREATE TABLE content_item (
+    id UUID PRIMARY KEY,
+    workspace_id UUID REFERENCES workspace(id),
+    platform VARCHAR(50),
+    scheduled_at TIMESTAMP,
+    status VARCHAR(20),
+    content JSONB, -- {caption, media_urls, settings}
+    created_at TIMESTAMP
+);
+```
+
+### 4. Arsitektur AI (Pilar 6 - Brand AI Cortex)
+
+**Komponen Utama:**
+
+1.  **LLM Gateway Service (FastAPI)**
+    -   Menerima permintaan dari *frontend*.
+    -   Mengelola *API keys* untuk OpenAI/Claude.
+    -   Menambahkan **Brand Context Object** ke setiap *prompt*.
+    -   *Fallback* ke model *open-source* jika *rate limit* tercapai.
+
+2.  **Knowledge Base RAG (Retrieval-Augmented Generation)**
+    -   **Sumber Data:** PDF buku pakar, artikel, transkrip video.
+    -   **Proses:**
+        -   *Ingestion Pipeline:* PDF → Ekstrak Teks → *Chunking* → *Embedding* (OpenAI `text-embedding-3-small`) → Simpan di Pinecone.
+        -   *Query Pipeline:* Pertanyaan → *Embedding* → Cari di Pinecone → Gabungkan hasil dengan *prompt* → Kirim ke LLM.
+
+3.  **Vision Service**
+    -   Menggunakan **Google Vision API** untuk:
+        -   *Logo Detection* (menemukan logo di gambar).
+        -   *Dominant Color Extraction*.
+        -   *OCR* (membaca teks dalam gambar).
+    -   Hasil disimpan di `asset.metadata`.
+
+4.  **Sentiment Analysis Service**
+    -   Model **DistilBERT** yang di-*fine-tune* pada dataset *brand sentiment*.
+    -   *Deployed* sebagai *microservice* terpisah.
+
+### 5. Keamanan Aset (Pilar 2 - Locked Asset Delivery)
+
+**Alur Teknis:**
+
+1.  Klien meminta unduhan logo via `/api/assets/{id}/download`.
+2.  **Backend** memeriksa izin pengguna (Guest hanya bisa *locked version*).
+3.  **Backend** membaca file vektor asli (`.svg` atau `.ai`) dari S3.
+4.  **Backend** memanggil **Rendering Service (Node.js + Sharp/Puppeteer)** :
+    -   Menerapkan *clear space* (menambahkan *padding* transparan).
+    -   Mengubah warna (jika format SVG).
+    -   Merender ke PNG (jika diminta).
+5.  **Backend** menghasilkan **Signed URL** S3 yang berlaku **5 menit**.
+6.  **Backend** mengembalikan URL ke *frontend* untuk memulai unduhan.
+7.  **File vektor asli tidak pernah terekspos ke klien.**
+
+### 6. Deployment & Scalability
+
+-   **Kubernetes Cluster** di AWS EKS atau Google GKE.
+-   **Horizontal Pod Autoscaling (HPA)** untuk *service* AI dan *rendering* yang membutuhkan CPU/GPU tinggi.
+-   **Redis Cluster** untuk *caching* *brand context* (mengurangi *database hit*).
+-   **CDN (CloudFront)** untuk distribusi aset statis dan *thumbnail*.
+
+---
+
+# 📄 DOKUMEN 3: SPESIFIKASI TAMBAHAN
+
+## A. User Onboarding Flow
+
+Alur pendaftaran dan pengenalan fitur untuk pengguna baru.
+
+### 1. Alur Pendaftaran (Sign-Up Flow)
+
+```text
+1. Landing Page -> Klik "Mulai Gratis"
+2. Form Pendaftaran:
+   - Nama Lengkap
+   - Email Bisnis
+   - Kata Sandi
+   - Pilih Peran: [Agency Owner] [Brand Manager] [Founder UKM]
+3. Verifikasi Email (Link ajaib)
+4. Onboarding Questionnaire (Opsional, bisa dilewati):
+   - "Apa nama merek/proyek pertama Anda?"
+   - "Apa industri Anda?"
+   - "Apa tujuan utama menggunakan BrandOS?"
+     ( ) Membangun fondasi merek dari nol
+     ( ) Mengelola aset merek yang sudah ada
+     ( ) Membuat konten media sosial
+     ( ) Mengaudit konsistensi merek
+5. Pembuatan Workspace Otomatis:
+   - Sistem membuat *workspace* pertama dengan nama merek.
+6. Tur Interaktif (Product Tour):
+   - *Tooltip* langkah demi langkah:
+     - "Di sini Command Center Anda."
+     - "Mulai dengan mengisi Golden Circle (2 menit)."
+     - "Upload logo Anda ke Brand Fortress."
+7. Dashboard Utama dengan *checklist* "Quick Wins":
+   - [ ] Isi Golden Circle
+   - [ ] Upload Logo
+   - [ ] Tentukan Warna Merek
+   - [ ] Undang Anggota Tim
+```
+
+### 2. UI/UX Onboarding Checklist
+
+```text
++---------------------------------------------------+
+|  SELAMAT DATANG, [Nama]!                          |
+|  Mari selesaikan setup merek Anda.                |
++---------------------------------------------------+
+|                                                   |
+|  Quick Wins (Selesaikan 4 langkah ini):           |
+|                                                   |
+|  [✓] 1. Verifikasi Email                         |
+|  [●] 2. Isi Golden Circle (2 menit)      [Mulai] |
+|  [ ] 3. Upload Logo Pertama              [Upload]|
+|  [ ] 4. Tentukan Warna Merek             [Atur]  |
+|                                                   |
+|  Progress: 1/4 Selesai                            |
+|  ████░░░░░░░░░░░░░░░░ 25%                        |
+|                                                   |
+|  [ Lewati, Saya Ingin Eksplorasi Sendiri ]        |
++---------------------------------------------------+
+```
+
+---
+
+## B. Security & Compliance
+
+### 1. Keamanan Data
+
+| Aspek | Implementasi |
+| :--- | :--- |
+| **Enkripsi Data** | **At-rest:** AES-256 (AWS S3/KMS). **In-transit:** TLS 1.3. |
+| **Autentikasi** | OAuth 2.0 / OpenID Connect. Dukungan **Single Sign-On (SSO)** via SAML untuk paket Enterprise. |
+| **Otorisasi** | **Role-Based Access Control (RBAC)** dengan 5 level: `Super Admin`, `Agency Admin`, `Workspace Admin`, `Editor`, `Guest`. |
+| **Keamanan API** | **Rate Limiting** per pengguna, **API Keys** dengan *scope* terbatas, validasi *JWT token*. |
+| **Backup & Disaster Recovery** | *Automated daily backup* ke AWS S3 *cross-region*. **Recovery Time Objective (RTO):** < 4 jam. |
+| **PII Masking** | Semua data PII (email, nama) disamarkan sebelum dikirim ke LLM pihak ketiga (OpenAI). |
+
+### 2. Kepatuhan (Compliance)
+
+-   **GDPR (General Data Protection Regulation):**
+    -   Hak untuk dihapus (*Right to Erasure*): Pengguna dapat menghapus *workspace* dan semua data terkait secara permanen.
+    -   *Data Processing Agreement (DPA)* tersedia.
+    -   *Cookie consent banner*.
+-   **SOC 2 Type II (Target):** Akan diupayakan setelah produk stabil.
+-   **WCAG 2.1 AA:** Komitmen untuk aksesibilitas antarmuka.
+
+### 3. Audit Trail
+
+-   Setiap tindakan penting tercatat di tabel `audit_log`:
+    -   `workspace_id`, `user_id`, `action` (misal: `asset.download`, `guideline.update`), `timestamp`, `ip_address`, `metadata`.
+-   Log disimpan minimal 1 tahun untuk kebutuhan audit.
+
+---
+
+## C. Integration Guide (Panduan Integrasi)
+
+### 1. Integrasi Pihak Ketiga yang Didukung (Prioritas)
+
+| Platform | Jenis Integrasi | Fungsi di BrandOS |
+| :--- | :--- | :--- |
+| **Google Drive / Dropbox** | Import File | Mengimpor aset langsung ke DAM (Pilar 2). |
+| **Slack / Microsoft Teams** | Notifikasi | Menerima notifikasi *approval* atau komentar klien. |
+| **Canva (API)** | Ekspor Desain | Mengimpor desain Canva ke *Template Lockdown Editor*. |
+| **Figma (API)** | Ekspor Aset | Mengambil komponen desain dari Figma untuk DAM. |
+| **WordPress (REST API)** | Publikasi | Mempublikasikan artikel blog langsung dari Pilar 4. |
+| **Mailchimp / Klaviyo** | Publikasi Email | Mengirim kampanye email langsung dari Pilar 4. |
+| **Zapier / Make** | *No-Code Automation* | Menghubungkan BrandOS dengan 5000+ aplikasi lain. |
+
+### 2. API Publik BrandOS (Untuk Pengembang)
+
+**Autentikasi:** Bearer Token (API Key)
+
+**Endpoint Utama:**
+
+| Endpoint | Metode | Deskripsi |
+| :--- | :--- | :--- |
+| `/v1/workspaces` | GET | Mendapatkan daftar *workspace*. |
+| `/v1/assets` | POST | Mengunggah aset baru ke DAM. |
+| `/v1/assets/{id}/download` | GET | Mengunduh aset (versi terkunci jika *guest*). |
+| `/v1/audit/website` | POST | Memulai *scan* audit konsistensi situs web. |
+| `/v1/ai/writer` | POST | Menghasilkan teks dengan *brand voice*. |
+
+### 3. Webhooks
+
+BrandOS dapat mengirimkan *event* ke URL *webhook* yang ditentukan pengguna:
+
+-   `content.published` – Ketika konten berhasil dipublikasikan.
+-   `design.approved` – Ketika klien menyetujui desain.
+-   `audit.completed` – Ketika laporan audit selesai.

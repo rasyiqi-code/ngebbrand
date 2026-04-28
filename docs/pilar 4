@@ -1,0 +1,516 @@
+Berikut adalah dokumen spesifikasi rinci untuk **Pilar 4: Brand Amplifier**. Pilar ini adalah pusat kendali untuk mendistribusikan konten merek ke berbagai kanal digital dan mengukur dampaknya terhadap kesehatan merek secara keseluruhan.
+
+---
+
+## 📁 Pilar 4: Brand Amplifier (Distribusi Konten & Analisis Performa Merek)
+
+### 1. Tujuan Pilar
+
+Menyediakan platform terpadu untuk merencanakan, menjadwalkan, mempublikasikan, dan menganalisis konten merek di seluruh kanal digital (media sosial, email, blog). Pilar ini tidak hanya melacak metrik *vanity* (like, share), tetapi juga mengukur **Brand Health Metrics** yang selaras dengan teori pakar (seperti **Brand Resonance Pyramid** dari Kevin Keller) untuk memberikan gambaran holistik tentang kekuatan merek dari waktu ke waktu.
+
+### 2. Arsitektur Modul
+
+Pilar 4 terdiri dari empat modul utama yang saling terintegrasi:
+
+| No. | Nama Modul | Fungsi Utama | Prioritas |
+| :-- | :--- | :--- | :--- |
+| 1 | **Unified Content Calendar** | Kalender visual terpadu untuk merencanakan dan mengelola konten lintas kanal. | P0 (MVP) |
+| 2 | **Omnichannel Publishing Engine** | Mesin publikasi langsung ke berbagai platform media sosial dan kanal digital. | P0 (MVP) |
+| 3 | **Brand Impact Analytics** | Dasbor analitik yang mengukur metrik kesehatan merek (Resonance, Salience, Sentiment). | P1 |
+| 4 | **AI Scheduling & Optimization** | Rekomendasi waktu posting optimal dan saran peningkatan konten berdasarkan data historis. | P2 |
+
+---
+
+## 📄 Spesifikasi Fitur per Modul
+
+### Modul 4.1: Unified Content Calendar
+
+#### Tujuan
+Memberikan tampilan kalender visual yang menyatukan semua rencana konten dari berbagai kanal dalam satu antarmuka. Memungkinkan tim pemasaran untuk melihat gambaran besar strategi konten, menghindari bentrokan jadwal, dan memastikan konsistensi pesan di semua platform.
+
+#### Alur Kerja (Workflow)
+
+1. **Akses Kalender:**
+   - Pengguna membuka **Brand Amplifier > Content Calendar** dari dashboard utama.
+   - Tampilan default adalah **Bulanan** (dapat diubah ke Mingguan, Harian, atau *List View*).
+
+2. **Membuat Entri Konten Baru:**
+   - Pengguna mengklik tombol **"+ Buat Postingan"** atau mengklik langsung pada slot tanggal di kalender.
+   - Sistem menampilkan **Composer Side Panel** (panel samping pembuatan konten).
+
+3. **Mengisi Detail Konten (Composer):**
+   - **Platform:** Pilih satu atau beberapa platform target (Instagram, Facebook, LinkedIn, Twitter/X, TikTok, Email Newsletter, Blog).
+   - **Jenis Konten:** *Feed Post*, *Story*, *Reel*, *Carousel*, *Article*, *Email*.
+   - **Aset Visual:**
+     - **Ambil dari Pilar 3:** Pilih desain yang telah dibuat di **Template Lockdown Editor**.
+     - **Ambil dari DAM (Pilar 2):** Pilih gambar/video yang sudah ada.
+     - **Unggah Baru:** Unggah file langsung.
+   - **Teks Konten:**
+     - **Ambil dari AI Writer (Pilar 3):** Gunakan teks yang telah dihasilkan AI.
+     - **Tulis Manual:** Dengan saran *tone of voice* dari AI Co-Strategist.
+   - **Jadwal:**
+     - **Tanggal & Waktu:** Pilih kapan akan dipublikasikan.
+     - **Zona Waktu:** Otomatis terdeteksi atau pilih manual.
+   - **Label/Kampanye:** Tambahkan tag untuk pengelompokan (misal: "Ramadhan 2026", "Peluncuran Produk").
+
+4. **Visualisasi di Kalender:**
+   - Entri konten muncul di kalender sebagai kartu kecil dengan:
+     - Ikon platform (misal: logo Instagram).
+     - *Thumbnail* gambar.
+     - Judul singkat atau baris pertama teks.
+   - Warna latar kartu sesuai dengan warna label kampanye.
+   - *Drag-and-drop* didukung untuk memindahkan jadwal konten.
+
+5. **Kolaborasi Tim:**
+   - Pengguna dapat menandai rekan tim di komentar internal pada setiap entri.
+   - Status konten: **Draft**, **Menunggu Persetujuan**, **Disetujui**, **Terjadwal**, **Terpublikasi**, **Gagal**.
+   - Filter berdasarkan status, platform, atau kampanye.
+
+#### Konsep UI/UX
+
+**Halaman Utama Kalender (Tampilan Bulanan):**
+
+```text
++-----------------------------------------------------------------------+
+|  CONTENT CALENDAR - [Nama Workspace]            [Bulan] [Minggu] [Hari]|
+|  [ + Buat Postingan ]  [Filter: Semua Platform ▼] [Label: Semua ▼]    |
++-----------------------------------------------------------------------+
+|  April 2026                                                            |
+|  +-----------+-----------+-----------+-----------+-----------+--------+
+|  | Sen       | Sel       | Rab       | Kam       | Jum       | Sab/Ming|
+|  +-----------+-----------+-----------+-----------+-----------+--------+
+|  | 1         | 2         | 3         | 4         | 5         | 6 / 7   |
+|  |           |           | [IG] 🖼️   |           | [IG] 📱   |         |
+|  |           |           | Promo     |           | Story     |         |
+|  |           |           |           |           | [FB] 🖼️   |         |
+|  +-----------+-----------+-----------+-----------+-----------+--------+
+|  | 8         | 9         | 10        | 11        | 12        | 13 / 14 |
+|  |           | [LI] 📄   | [IG] 🎥   |           | [IG] 🖼️   |         |
+|  |           | Artikel   | Reel      |           | Tips      |         |
+|  +-----------+-----------+-----------+-----------+-----------+--------+
+|  ...                                                                   |
++-----------------------------------------------------------------------+
+|  Legend: [IG]=Instagram, [FB]=Facebook, [LI]=LinkedIn, [TT]=TikTok     |
++-----------------------------------------------------------------------+
+```
+
+**Composer Side Panel (Saat Membuat Postingan Baru):**
+
+```text
++---------------------------------------------------+
+|  BUAT POSTINGAN BARU                      [X]     |
++---------------------------------------------------+
+|  Platform:                                        |
+|  [✓] Instagram  [✓] Facebook  [ ] LinkedIn        |
+|  [ ] Twitter/X  [ ] TikTok                        |
+|                                                   |
+|  Jenis: [Feed Post ▼]                             |
+|                                                   |
+|  Konten Visual:                                   |
+|  +-------------------------------------------+    |
+|  | [Pilih dari Pilar 3] [Pilih dari DAM]     |    |
+|  | [📷 Upload Baru]                          |    |
+|  |                                           |    |
+|  | (Preview thumbnail akan muncul di sini)   |    |
+|  +-------------------------------------------+    |
+|                                                   |
+|  Teks/Caption:                                    |
+|  +-------------------------------------------+    |
+|  | [Gunakan AI Writer (Pilar 3)]             |    |
+|  |                                           |    |
+|  | [Text area untuk caption...]              |    |
+|  |                                           |    |
+|  | AI: "Caption ini memiliki skor 92%         |    |
+|  |       kesesuaian dengan Brand Voice."      |    |
+|  +-------------------------------------------+    |
+|                                                   |
+|  Jadwal Tayang:                                   |
+|  [📅 12 April 2026] [🕒 09:00] [WIB ▼]           |
+|                                                   |
+|  Label Kampanye: [Ramadhan 2026 ▼] [ + Baru ]     |
+|                                                   |
+|  Status: [Draft ▼]                                |
+|                                                   |
+|  [ Simpan Draft ]  [ Jadwalkan ]  [ Publikasi Sekarang ] |
++---------------------------------------------------+
+```
+
+**Detail Entri Kalender (Saat Diklik):**
+
+```text
++---------------------------------------------------+
+|  DETAIL POSTINGAN - Instagram Feed        [X]     |
++---------------------------------------------------+
+|  [Preview Gambar Besar]                           |
+|                                                   |
+|  Caption:                                         |
+|  "Kesadaran hadir dalam setiap tegukan. 🌿..."    |
+|                                                   |
+|  Jadwal: 12 April 2026, 09:00 WIB                 |
+|  Status: Terjadwal                                |
+|  Platform: Instagram, Facebook                    |
+|  Kampanye: Ramadhan 2026                          |
+|                                                   |
+|  Komentar Internal:                               |
+|  [👤 Admin] "Tolong cek lagi typo."               |
+|  [👤 Desainer] "Sudah diperbaiki."                |
+|  [Tulis komentar...]                              |
+|                                                   |
+|  [ Edit ]  [ Duplikat ]  [ Batalkan Jadwal ]      |
++---------------------------------------------------+
+```
+
+---
+
+### Modul 4.2: Omnichannel Publishing Engine
+
+#### Tujuan
+Memungkinkan publikasi konten langsung ke berbagai platform media sosial dan kanal digital tanpa perlu *copy-paste* manual atau login ke masing-masing platform. Mesin ini terintegrasi dengan API resmi platform untuk memastikan keandalan dan keamanan.
+
+#### Alur Kerja (Workflow)
+
+1. **Koneksi Akun (Setup Awal):**
+   - Admin mengakses **Settings > Platform Connections**.
+   - Admin mengklik **"Hubungkan Akun"** untuk platform yang diinginkan (Instagram, Facebook Page, LinkedIn Page, Twitter, TikTok).
+   - Sistem mengarahkan ke halaman OAuth platform terkait untuk otorisasi.
+   - Setelah berhasil, akun muncul di daftar dengan status **"Terhubung"** dan informasi dasar (nama akun, foto profil).
+
+2. **Proses Publikasi:**
+   - Saat konten dijadwalkan, sistem secara otomatis memprosesnya pada waktu yang ditentukan.
+   - **Untuk Gambar:** Sistem mengunggah media ke platform melalui API.
+   - **Untuk Video/Reel:** Sistem memulai proses unggahan asinkron (memakan waktu lebih lama) dan memantau statusnya.
+   - **Untuk Carousel:** Sistem mengunggah beberapa gambar dan mengaturnya sesuai urutan.
+
+3. **Penanganan Platform Spesifik:**
+   - **Instagram:**
+     - *Feed Post:* Gambar persegi atau *portrait*.
+     - *Story:* Gambar/Video vertikal 9:16.
+     - *Reel:* Video pendek vertikal.
+   - **Facebook:** Mendukung teks panjang, tautan, dan multi-gambar.
+   - **LinkedIn:** Mendukung artikel panjang, dokumen PDF, dan *carousel*.
+   - **TikTok:** Video pendek dengan opsi musik (jika tersedia).
+
+4. **Monitoring & Notifikasi:**
+   - Setelah publikasi, sistem menampilkan status:
+     - **✅ Berhasil:** Dipublikasikan pada [waktu]. Tautan ke postingan.
+     - **⏳ Memproses:** Video sedang diproses oleh platform.
+     - **❌ Gagal:** Alasan kegagalan (misal: token kedaluwarsa, format tidak didukung).
+   - Notifikasi dikirim ke email pengguna atau notifikasi in-app jika terjadi kegagalan.
+
+5. **Fitur Tambahan: First Comment & Auto-Hashtag:**
+   - **First Comment:** Untuk Instagram, pengguna dapat menambahkan komentar pertama (sering digunakan untuk hashtag) secara otomatis.
+   - **Auto-Hashtag Generator:** Berdasarkan analisis konten, AI menyarankan hashtag relevan.
+
+#### Konsep UI/UX
+
+**Halaman Platform Connections (Settings):**
+
+```text
++---------------------------------------------------------------+
+|  PLATFORM CONNECTIONS - Hubungkan Akun Media Sosial           |
++---------------------------------------------------------------+
+|                                                               |
+|  Instagram Business/Creator                                   |
+|  [Status: Terhubung - @heningcoffee]     [ Putuskan ]         |
+|  [✓] Feed Post  [✓] Story  [✓] Reel                           |
+|                                                               |
+|  Facebook Page                                                |
+|  [Status: Terhubung - Hening Coffee]    [ Putuskan ]          |
+|  [✓] Post  [✓] Link Post  [✓] Video                          |
+|                                                               |
+|  LinkedIn Page                                                |
+|  [Status: Belum Terhubung]               [ Hubungkan ]        |
+|                                                               |
+|  TikTok Business                                              |
+|  [Status: Belum Terhubung]               [ Hubungkan ]        |
+|                                                               |
+|  Email Newsletter (Mailchimp/Klaviyo)                         |
+|  [Status: Terhubung - Mailchimp]         [ Putuskan ]         |
+|                                                               |
+|  WordPress / Blog                                             |
+|  [Status: Belum Terhubung]               [ Hubungkan ]        |
+|                                                               |
+|  [ Simpan Pengaturan ]                                        |
++---------------------------------------------------------------+
+```
+
+**Notifikasi Status Publikasi (In-App atau Email):**
+
+```text
++---------------------------------------------------+
+|  🔔 NOTIFIKASI PUBLIKASI                          |
++---------------------------------------------------+
+|                                                   |
+|  Postingan Instagram Feed "Kesadaran hadir..."    |
+|  ✅ Berhasil dipublikasikan pada 09:00 WIB.       |
+|                                                   |
+|  Lihat postingan: [ Tautan ]                      |
+|                                                   |
+|  Postingan TikTok Reel "Behind the scenes..."     |
+|  ⏳ Sedang diproses. Estimasi selesai 5 menit.    |
+|                                                   |
+|  [ Lihat Semua Aktivitas ]                        |
++---------------------------------------------------+
+```
+
+---
+
+### Modul 4.3: Brand Impact Analytics
+
+#### Tujuan
+Menyediakan dasbor analitik yang melampaui metrik *engagement* biasa. Modul ini mengukur **Brand Health Metrics** berdasarkan kerangka teoritis para pakar, khususnya **Brand Resonance Pyramid (Kevin Keller)**, serta metrik **Share of Voice** dan **Sentiment Analysis** yang divisualisasikan secara intuitif.
+
+#### Alur Kerja (Workflow)
+
+1. **Akses Dasbor:**
+   - Pengguna membuka **Brand Amplifier > Analytics**.
+
+2. **Periode & Platform:**
+   - Pilih rentang waktu (7 hari, 30 hari, 90 hari, kustom).
+   - Pilih platform yang ingin dianalisis (Semua, atau spesifik).
+
+3. **Metrik Utama (Overview):**
+   - **Brand Health Score (0-100):** Skor gabungan yang dihitung dari semua metrik di bawahnya (dengan bobot AI).
+   - **Reach & Impressions:** Total jangkauan konten.
+   - **Engagement Rate:** Rata-rata interaksi per *impression*.
+   - **Follower Growth:** Pertumbuhan pengikut bersih.
+
+4. **Analisis Brand Resonance Pyramid (Kevin Keller):**
+   - Sistem mengukur setiap tingkat piramida berdasarkan data yang tersedia:
+     - **Level 1: Salience (Kesadaran)**
+       - *Sumber Data:* Volume pencarian merek (Google Trends API), jumlah *mention* (scraping media sosial), *reach* iklan.
+     - **Level 2: Performance & Imagery (Kinerja & Citra)**
+       - *Sumber Data:* Analisis sentimen ulasan produk, asosiasi kata kunci di komentar (AI *topic modeling*).
+     - **Level 3: Judgments & Feelings (Penilaian & Perasaan)**
+       - *Sumber Data:* Analisis sentimen mendalam (positif/negatif/netral), emosi dominan (senang, kagum, kecewa).
+     - **Level 4: Resonance (Resonansi)**
+       - *Sumber Data:* Tingkat *share*, *save*, komentar berbobot, partisipasi komunitas, *user-generated content*.
+
+5. **Visualisasi Piramida Interaktif:**
+   - Tampilan piramida empat tingkat.
+   - Setiap tingkat memiliki **skor 0-100** dan warna indikator (merah, kuning, hijau).
+   - Klik pada tingkat untuk melihat rincian data.
+
+6. **Analisis Kompetitif (Share of Voice):**
+   - Masukkan daftar kompetitor (manual).
+   - Sistem menampilkan grafik batang *Share of Voice* (persentase percakapan publik yang menyebut merek Anda vs kompetitor).
+
+7. **Ekspor Laporan:**
+   - **White-Label PDF Report:** Laporan siap presentasi dengan logo agensi (untuk Pilar 5).
+   - **CSV Export:** Data mentah untuk analisis lebih lanjut.
+
+#### Konsep UI/UX
+
+**Dasbor Analytics Utama:**
+
+```text
++-----------------------------------------------------------------------+
+|  BRAND IMPACT ANALYTICS - Hening Coffee               [Ekspor Laporan] |
+|  Periode: [30 Hari Terakhir ▼]  Platform: [Semua Platform ▼]          |
++-----------------------------------------------------------------------+
+|  +------------------+  +------------------+  +------------------+      |
+|  | BRAND HEALTH     |  | TOTAL REACH      |  | ENGAGEMENT RATE  |      |
+|  | SCORE            |  | 125.4K           |  | 4.8%             |      |
+|  | 78/100           |  | ↑ 12% vs bulan lalu|  | ↑ 0.5%           |      |
+|  | 🟡 Perlu Atensi  |  |                  |  |                  |      |
+|  +------------------+  +------------------+  +------------------+      |
+|                                                                       |
+|  +------------------+  +------------------+  +------------------+      |
+|  | FOLLOWER GROWTH  |  | AVG. SENTIMENT   |  | SHARE OF VOICE   |      |
+|  | +342 (2.1%)      |  | 72% Positif      |  | 35%              |      |
+|  |                  |  | 🟢 Sehat         |  | vs Kompetitor    |      |
+|  +------------------+  +------------------+  +------------------+      |
++-----------------------------------------------------------------------+
+```
+
+**Tampilan Brand Resonance Pyramid:**
+
+```text
++---------------------------------------------------------------+
+|  BRAND RESONANCE PYRAMID - Kevin Keller Model                 |
++---------------------------------------------------------------+
+|                                                               |
+|                         +-----+                               |
+|                        /       \                              |
+|                       /  [4]    \     Level 4: RESONANCE       |
+|                      /   78/100  \    (Loyalitas & Advokasi)   |
+|                     /    🟡      \                            |
+|                    +---------------+                           |
+|                   /                 \                          |
+|                  /      [3]          \  Level 3: JUDGMENTS &   |
+|                 /       65/100        \ FEELINGS (Kualitas &   |
+|                /        🟡            \ Kredibilitas)           |
+|               +-----------------------+                         |
+|              /                         \                        |
+|             /          [2]              \ Level 2: PERFORMANCE  |
+|            /           88/100            \ & IMAGERY (Citra)    |
+|           /            🟢                \                      |
+|          +-------------------------------+                       |
+|         /                                 \                      |
+|        /               [1]                 \ Level 1: SALIENCE   |
+|       /                92/100               \ (Kesadaran Merek)  |
+|      /                 🟢                   \                    |
+|     +---------------------------------------+                     |
+|                                                               |
+|  Klik setiap tingkat untuk melihat rincian metrik.            |
++---------------------------------------------------------------+
+```
+
+**Panel Rincian Saat Klik "Level 4: Resonance":**
+
+```text
++---------------------------------------------------+
+|  LEVEL 4: RESONANCE - Rincian Metrik              |
++---------------------------------------------------+
+|                                                   |
+|  Skor: 78/100 (🟡 Perlu Atensi)                   |
+|                                                   |
+|  Metrik Komponen:                                 |
+|  +-------------------------------------------+    |
+|  | Behavioral Loyalty (Repeat Purchase):     |    |
+|  | ████████░░ 82/100                         |    |
+|  | (Data dari integrasi e-commerce)          |    |
+|  +-------------------------------------------+    |
+|  | Attitudinal Attachment (Sentimen Positif):|    |
+|  | ███████░░░ 75/100                         |    |
+|  | (Analisis komentar mendalam)              |    |
+|  +-------------------------------------------+    |
+|  | Sense of Community (Partisipasi):         |    |
+|  | ██████░░░░ 68/100                         |    |
+|  | (Jumlah UGC dan mention komunitas)        |    |
+|  +-------------------------------------------+    |
+|  | Active Engagement (Share & Save):         |    |
+|  | ████████░░ 85/100                         |    |
+|  | (Rata-rata share per post)                |    |
+|  +-------------------------------------------+    |
+|                                                   |
+|  Rekomendasi AI:                                  |
+|  "Tingkatkan partisipasi komunitas dengan         |
+|   mengadakan kontes UGC atau sesi tanya jawab."   |
++---------------------------------------------------+
+```
+
+**Tampilan Share of Voice (Kompetitif):**
+
+```text
++---------------------------------------------------+
+|  SHARE OF VOICE - 30 Hari Terakhir                |
++---------------------------------------------------+
+|                                                   |
+|  [Grafik Batang Horizontal]                       |
+|                                                   |
+|  Hening Coffee   ████████████████████ 35%         |
+|  Kompetitor A    ██████████████ 25%               |
+|  Kompetitor B    ████████ 15%                     |
+|  Kompetitor C    ████ 8%                          |
+|  Lainnya         ███████ 17%                      |
+|                                                   |
+|  Total Mention: 12,450 percakapan                 |
+|  Sumber: Instagram, Twitter/X, Facebook, Blog     |
+|                                                   |
+|  [ Lihat Analisis Sentimen per Kompetitor ]       |
++---------------------------------------------------+
+```
+
+---
+
+### Modul 4.4: AI Scheduling & Optimization
+
+#### Tujuan
+Memberikan rekomendasi cerdas tentang **kapan waktu terbaik untuk memposting** berdasarkan analisis historis keterlibatan audiens merek. Selain itu, memberikan saran peningkatan konten sebelum dipublikasikan berdasarkan data performa konten serupa di masa lalu.
+
+#### Alur Kerja (Workflow)
+
+1. **Analisis Waktu Terbaik:**
+   - Sistem secara otomatis menganalisis data historis dari **Omnichannel Publishing Engine** dan **Analytics**.
+   - AI mengidentifikasi pola:
+     - Hari dan jam dengan *engagement rate* tertinggi.
+     - Jenis konten yang berkinerja baik di waktu tertentu.
+   - Hasilnya disimpan sebagai **"Audience Active Hours"** untuk setiap platform.
+
+2. **Rekomendasi Saat Menjadwalkan:**
+   - Saat pengguna membuat konten di **Composer** (Modul 4.1), sistem menampilkan **"Rekomendasi Waktu Terbaik"**.
+   - Contoh: "Audiens Anda paling aktif di Instagram pada hari Rabu pukul 11:00 dan Jumat pukul 16:00."
+
+3. **Optimasi Konten (Pre-Publish Check):**
+   - Sebelum publikasi, AI menganalisis konten dan membandingkannya dengan data historis.
+   - AI memberikan saran:
+     - **Visual:** "Gambar dengan wajah orang cenderung mendapatkan 20% lebih banyak *engagement*." (Jika relevan).
+     - **Caption:** "Caption dengan pertanyaan di akhir meningkatkan komentar sebesar 15%. Pertimbangkan menambahkan pertanyaan."
+     - **Hashtag:** "Gunakan 3-5 hashtag niche untuk jangkauan lebih baik."
+
+4. **Laporan Mingguan Otomatis:**
+   - Sistem mengirimkan email ringkasan mingguan yang berisi:
+     - Performa konten terbaik dan terburuk.
+     - Waktu posting optimal untuk minggu depan.
+     - Satu saran utama untuk peningkatan.
+
+#### Konsep UI/UX
+
+**Rekomendasi Waktu di Composer:**
+
+```text
++---------------------------------------------------+
+|  JADWAL TAYANG                                    |
++---------------------------------------------------+
+|  [📅 12 April 2026]                               |
+|                                                   |
+|  Rekomendasi AI (Instagram):                      |
+|  ⏰ Waktu Terbaik: Rabu, 11:00 WIB (Skor 92)       |
+|  ⏰ Alternatif:     Jumat, 16:00 WIB (Skor 88)     |
+|  ⏰ Pilihan Anda:   Senin, 09:00 WIB (Skor 65)     |
+|                                                   |
+|  [🕒 09:00] [WIB ▼]                               |
+|                                                   |
+|  [ Gunakan Rekomendasi AI (Rabu 11:00) ]          |
++---------------------------------------------------+
+```
+
+**Pre-Publish Check (Sebelum Tombol "Jadwalkan"):**
+
+```text
++---------------------------------------------------+
+|  ✨ AI PRE-PUBLISH CHECK                           |
++---------------------------------------------------+
+|                                                   |
+|  Konten Anda dianalisis:                          |
+|                                                   |
+|  ✅ Visual: Gambar memiliki kontras yang baik.     |
+|  💡 Caption: Menambahkan pertanyaan di akhir dapat |
+|     meningkatkan komentar. Contoh: "Bagaimana      |
+|     momen heningmu pagi ini?"                      |
+|  💡 Hashtag: Rekomendasi hashtag: #ColdBrewArtisan |
+|     #KopiHening #MorningRitual                     |
+|                                                   |
+|  [ Abaikan ]  [ Terapkan Saran ]                   |
++---------------------------------------------------+
+```
+
+---
+
+### 5. Integrasi Antar Modul dalam Pilar 4
+
+```mermaid
+graph TD
+    A[Unified Content Calendar] -->|Jadwalkan konten| B[Omnichannel Publishing Engine]
+    B -->|Data publikasi| C[Brand Impact Analytics]
+    C -->|Data historis| D[AI Scheduling & Optimization]
+    D -->|Rekomendasi| A
+    A -->|Ambil konten dari| E[Pilar 3: Expression Studio]
+    A -->|Ambil aset dari| F[Pilar 2: DAM]
+    C -->|Ekspor laporan| G[Pilar 5: Agency Hub]
+```
+
+### 6. Integrasi dengan Pilar Lain
+
+| Dari Pilar 4 | Ke Pilar Lain | Fungsi |
+| :--- | :--- | :--- |
+| **Konten Terjadwal** | **Dari Pilar 3 (Expression Studio)** | Desain dan teks yang dibuat di Pilar 3 langsung masuk ke kalender. |
+| **Aset Visual** | **Dari Pilar 2 (DAM)** | Gambar dan video diambil dari perpustakaan pusat. |
+| **Brand Health Score** | **Pilar 5 (Agency Hub)** | Skor ditampilkan di dasbor klien untuk *upselling*. |
+| **Data Analitik** | **Pilar 1 (Brand Genesis)** | Validasi apakah strategi awal berhasil atau perlu penyesuaian. |
+| **Laporan White-Label** | **Pilar 5 (Agency Hub)** | Digunakan untuk presentasi ke klien. |
+
+---
+
+Dokumen ini melengkapi spesifikasi **Pilar 4** dengan detail alur kerja dan konsep UI/UX untuk setiap modul. Tim pengembang dapat menggunakannya sebagai acuan untuk membangun sistem distribusi konten dan analitik merek yang terintegrasi.

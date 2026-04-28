@@ -1,0 +1,563 @@
+Berikut adalah dokumen spesifikasi rinci untuk **Pilar 6: Brand AI Cortex** dan **Pilar 7: Brand Visual Intelligence Hub**. Kedua pilar ini merupakan fondasi kecerdasan dan kreativitas platform BrandOS.
+
+---
+
+## 📁 Pilar 6: Brand AI Cortex (Lapisan Kecerdasan Merek)
+
+### 1. Tujuan Pilar
+
+Menyediakan lapisan kecerdasan buatan yang terintegrasi di seluruh platform BrandOS. **Brand AI Cortex** bukanlah modul dengan antarmuka pengguna tersendiri, melainkan **mesin backend** yang menggerakkan fitur-fitur cerdas di Pilar 1 hingga Pilar 5. Pilar ini memastikan bahwa setiap rekomendasi, analisis, dan generasi konten didasarkan pada pemahaman mendalam tentang teori branding dari para pakar serta data spesifik merek pengguna.
+
+### 2. Arsitektur Teknis
+
+| Komponen | Deskripsi | Teknologi (Usulan) |
+| :--- | :--- | :--- |
+| **LLM Core** | Model bahasa besar yang telah di-*fine-tune* dengan korpus teori branding. | OpenAI GPT-4o / Claude 3.5 Sonnet / Model *open-source* Llama 3. |
+| **Vision AI** | Model visi komputer untuk analisis gambar, deteksi logo, dan ekstraksi palet warna. | Google Vision API / AWS Rekognition / Model kustom YOLO. |
+| **NLP Sentiment Engine** | Mesin analisis sentimen dan *tone of voice* untuk teks. | Model *fine-tuned* berbasis BERT / RoBERTa. |
+| **Knowledge Base (RAG)** | Basis data vektor yang berisi kutipan dan ringkasan dari buku, jurnal, dan artikel para pakar branding. | Pinecone / Weaviate / pgvector. |
+| **Orchestration Layer** | Lapisan yang mengatur alur pemanggilan AI, memilih model yang tepat, dan mengelola *context window*. | LangChain / Custom Python Backend. |
+
+### 3. Data Training & Fine-Tuning
+
+**Korpus Pakar Branding (Knowledge Base):**
+- **David Aaker:** *Building Strong Brands*, *Brand Leadership*, *Aaker on Branding*.
+- **Jean-Noël Kapferer:** *The New Strategic Brand Management*, *Kapferer on Luxury*.
+- **Kevin Lane Keller:** *Strategic Brand Management* (Brand Resonance Pyramid).
+- **Alina Wheeler:** *Designing Brand Identity*.
+- **Simon Sinek:** *Start With Why*.
+- **Marty Neumeier:** *The Brand Gap*, *Zag*, *The Brand Flip*.
+- **Alexander Osterwalder:** *Value Proposition Design*.
+- **Margaret Mark & Carol S. Pearson:** *The Hero and the Outlaw* (Archetypes).
+
+**Data Spesifik Merek Pengguna (Context Injection):**
+- Hasil pengisian semua kanvas di Pilar 1 (Golden Circle, Brand Key, dll.).
+- Palet warna dan tipografi dari Pilar 7.
+- Aturan penggunaan aset dari Pilar 2.
+- Data historis performa konten dari Pilar 4.
+
+### 4. Layanan AI yang Disediakan (API Endpoints)
+
+| Endpoint | Fungsi | Digunakan Oleh Pilar |
+| :--- | :--- | :--- |
+| `/ai/co-strategist/chat` | Menjawab pertanyaan dengan perspektif pakar tertentu. | Semua Pilar (Sidebar AI) |
+| `/ai/co-strategist/suggest` | Menyarankan isian untuk kanvas strategi. | Pilar 1 |
+| `/ai/visual/palette` | Menghasilkan palet warna berdasarkan arketipe dan industri. | Pilar 7 |
+| `/ai/visual/typography` | Merekomendasikan pasangan font berdasarkan kepribadian merek. | Pilar 7 |
+| `/ai/visual/moodboard` | Menghasilkan *moodboard* dari pustaka gambar bebas royalti. | Pilar 7 |
+| `/ai/writer/caption` | Menulis teks pemasaran dengan *brand voice* spesifik. | Pilar 3 |
+| `/ai/auditor/color` | Menganalisis inkonsistensi warna dari tangkapan layar. | Pilar 2 |
+| `/ai/auditor/sentiment` | Menganalisis sentimen dan *tone of voice* teks. | Pilar 2, Pilar 4 |
+| `/ai/analytics/resonance` | Menghitung skor *Brand Resonance Pyramid*. | Pilar 4 |
+| `/ai/scheduler/optimal-time` | Merekomendasikan waktu posting terbaik. | Pilar 4 |
+
+### 5. Mekanisme Context-Aware Prompting
+
+Setiap panggilan API ke **Brand AI Cortex** akan menyertakan **Brand Context Object** yang berisi:
+
+```json
+{
+  "brand_id": "hening_coffee",
+  "brand_essence": "Kesadaran Hening",
+  "brand_archetype": "The Magician",
+  "brand_voice_attributes": ["inspiratif", "tenang", "puitis"],
+  "target_audience": "Profesional muda urban",
+  "industry": "F&B / Kopi",
+  "visual_guidelines": {
+    "primary_color": "#1A2B3C",
+    "font_heading": "Poppins Bold"
+  },
+  "recent_performance": {
+    "avg_engagement": 4.8,
+    "top_content_themes": ["mindfulness", "morning routine"]
+  }
+}
+```
+
+Dengan konteks ini, AI dapat memberikan respons yang sangat personal dan sesuai dengan DNA merek.
+
+### 6. Alur Kerja Teknis (Contoh: AI Co-Strategist)
+
+1. Pengguna membuka **AI Co-Strategist Sidebar** di halaman **Brand Key Model (Pilar 1)**.
+2. Pengguna mengetik: *"Apa yang akan dikatakan David Aaker tentang diferensiasi saya?"*
+3. **Frontend** mengirim permintaan ke `/ai/co-strategist/chat` dengan:
+   - `query`: "Apa yang akan dikatakan David Aaker tentang diferensiasi saya?"
+   - `expert_filter`: "David Aaker"
+   - `brand_context`: { ... }
+   - `current_canvas_data`: { "target": "...", "benefits": "..." }
+4. **Orchestration Layer**:
+   - Melakukan *retrieval* dari **Knowledge Base** untuk kutipan Aaker tentang "differentiation".
+   - Menyusun *system prompt*: *"Anda adalah David Aaker. Jawab pertanyaan pengguna berdasarkan teori Anda tentang diferensiasi merek, dan kaitkan dengan data merek mereka."*
+   - Memanggil **LLM Core** dengan *prompt* yang telah diperkaya.
+5. **LLM Core** menghasilkan respons.
+6. **Orchestration Layer** memformat respons dan mengirimkannya kembali ke **Frontend**.
+7. **Frontend** menampilkan respons di panel *chat*.
+
+### 7. Keamanan & Etika AI
+
+- **Data Isolation:** Setiap *prompt* dan data merek klien diproses secara terisolasi. Tidak digunakan untuk melatih ulang model publik.
+- **PII Masking:** Informasi identitas pribadi (nama klien, email) disamarkan sebelum dikirim ke LLM pihak ketiga.
+- **Human-in-the-Loop:** Semua saran AI bersifat rekomendasi. Pengguna selalu memiliki kendali penuh untuk mengedit atau menolak.
+- **Bias Mitigation:** *System prompt* secara eksplisit menginstruksikan AI untuk menghindari stereotip budaya atau gender.
+
+---
+
+## 📁 Pilar 7: Brand Visual Intelligence Hub (Identitas Visual)
+
+### 1. Tujuan Pilar
+
+Menyediakan seperangkat alat yang menerjemahkan strategi merek dari **Pilar 1** menjadi identitas visual yang konkret, koheren, dan siap digunakan. Pilar ini memandu pengguna melalui proses penciptaan sistem desain yang lengkap—mulai dari palet warna, tipografi, hingga *moodboard*—dengan bantuan AI yang memahami teori visual dari para pakar.
+
+### 2. Arsitektur Modul
+
+| No. | Nama Modul | Fungsi Utama | Prioritas |
+| :-- | :--- | :--- | :--- |
+| 1 | **Aaker Perspective Canvas** | Memetakan empat dimensi identitas visual menurut David Aaker. | P0 (MVP) |
+| 2 | **Kapferer Identity Prism Visualizer** | Menerjemahkan enam sisi Prisma Kapferer menjadi panduan visual. | P0 (MVP) |
+| 3 | **AI Color & Typography Engine** | Menghasilkan palet warna dan rekomendasi font berdasarkan input strategis. | P0 (MVP) |
+| 4 | **AI Moodboard Generator** | Membuat *moodboard* visual otomatis dari pustaka gambar bebas royalti. | P1 |
+| 5 | **Visual DNA Summary** | Ringkasan satu halaman yang mendefinisikan "Visual DNA" merek. | P1 |
+
+---
+
+## 📄 Spesifikasi Fitur per Modul
+
+### Modul 7.1: Aaker Perspective Canvas
+
+#### Tujuan
+Memandu pengguna untuk mendefinisikan identitas visual merek melalui empat perspektif David Aaker: **Brand as Product**, **Brand as Organization**, **Brand as Person**, dan **Brand as Symbol**.
+
+#### Alur Kerja (Workflow)
+
+1. Pengguna mengakses **Pilar 7 > Aaker Perspective Canvas**.
+2. Tampilan berupa empat kartu besar yang mewakili setiap perspektif.
+3. Setiap kartu memiliki serangkaian pertanyaan pemantik dan area input.
+4. AI Co-Strategist aktif di sidebar, siap membantu menjawab setiap pertanyaan.
+5. Setelah semua perspektif diisi, sistem menghasilkan **Visual DNA Keywords** (kata kunci visual).
+
+#### Konsep UI/UX
+
+```text
++-----------------------------------------------------------------------+
+|  AAKER PERSPECTIVE CANVAS - Hening Coffee                             |
++-----------------------------------------------------------------------+
+|                                                                       |
+|  +--------------------------------+  +--------------------------------+ |
+|  | BRAND AS PRODUCT               |  | BRAND AS ORGANIZATION          | |
+|  | (Asosiasi Fungsional & Emosional)| | (Atribut Perusahaan)           | |
+|  |                                |  |                                | |
+|  | **Apa janji fungsional utama?**|  | **Apa nilai budaya perusahaan?**||
+|  | [ Kopi cold brew halus tanpa  ]|  | [ Berkelanjutan, transparan,  ]||
+|  | [ rasa pahit berlebihan.     ] |  | [ dan mendukung petani lokal. ]||
+|  |                                |  |                                | |
+|  | **Apa manfaat emosionalnya?**  |  | **Bagaimana ini tercermin     | |
+|  | [ Memberikan momen hening dan ] |  | **secara visual?**             | |
+|  | [ fokus di pagi hari.        ] |  | [ Warna earthy, tekstur alami,]||
+|  |                                |  | [ dan citra yang jujur.       ]||
+|  +--------------------------------+  +--------------------------------+ |
+|                                                                       |
+|  +--------------------------------+  +--------------------------------+ |
+|  | BRAND AS PERSON                |  | BRAND AS SYMBOL                | |
+|  | (Kepribadian & Relasi)         |  | (Citra Visual & Metafora)      | |
+|  |                                |  |                                | |
+|  | **Jika merek adalah orang...** |  | **Simbol visual apa yang      | |
+|  | [ Seorang mentor yang tenang, ]|  | **paling kuat?**                | |
+|  | [ bijaksana, dan menginspirasi]|  | [ Gelombang air yang tenang,   ]||
+|  | [ tanpa menggurui.           ] |  | [ lingkaran zen, atau cakrawala]||
+|  |                                |  | [ pagi hari.                  ]||
+|  | **Bagaimana ia berbicara?**    |  |                                | |
+|  | [ Dengan nada rendah, penuh   ] |  | **Apa metafora visualnya?**   | |
+|  | [ makna, dan sesekali puitis. ] |  | [ "Ketenangan yang             | |
+|  |                                |  | [  menggerakkan"               ]||
+|  +--------------------------------+  +--------------------------------+ |
+|                                                                       |
+|  [ Hasilkan Visual DNA Keywords ]                                     |
++-----------------------------------------------------------------------+
+```
+
+**Hasil Visual DNA Keywords (Setelah Klik Tombol):**
+
+```text
++---------------------------------------------------+
+|  VISUAL DNA KEYWORDS - Hening Coffee              |
++---------------------------------------------------+
+|                                                   |
+|  Kata Kunci Visual yang Dihasilkan:               |
+|                                                   |
+|  [Minimalis] [Tenang] [Alami] [Kontemplatif]      |
+|  [Earthy] [Presisi] [Hening] [Mengalir]           |
+|                                                   |
+|  Kata kunci ini akan digunakan untuk menghasilkan  |
+|  palet warna dan rekomendasi tipografi.           |
+|                                                   |
+|  [ Lanjutkan ke Palet Warna ]                     |
++---------------------------------------------------+
+```
+
+---
+
+### Modul 7.2: Kapferer Identity Prism Visualizer
+
+#### Tujuan
+Menyediakan antarmuka visual interaktif untuk mengisi **Brand Identity Prism** Jean-Noël Kapferer. Setiap sisi prisma diterjemahkan menjadi elemen visual yang konkret.
+
+#### Alur Kerja (Workflow)
+
+1. Pengguna membuka modul **Kapferer Prism**.
+2. Tampilan utama adalah prisma heksagonal dengan enam sisi.
+3. Pengguna dapat mengklik setiap sisi untuk membuka panel pengisian.
+4. Panel pengisian berisi:
+   - Deskripsi sisi prisma.
+   - Pertanyaan pemantik dari AI.
+   - *Input field* untuk teks.
+   - Pilihan elemen visual terkait (misal: untuk *Physique*, pilih bentuk logo).
+5. Setiap sisi yang telah diisi akan berubah warna dari abu-abu menjadi solid.
+6. Setelah semua sisi terisi, prisma menjadi "lengkap" dan sistem dapat menghasilkan **Visual Brief**.
+
+#### Konsep UI/UX (Diperbarui dengan Detail Lebih Lengkap)
+
+**Tampilan Utama Prisma:**
+
+```text
++-----------------------------------------------------------------------+
+|  KAPFERER IDENTITY PRISM - Hening Coffee                              |
++-----------------------------------------------------------------------+
+|                                                                       |
+|                         [ PICTURE OF SENDER ]                         |
+|                               /       \                               |
+|                              /          \                             |
+|            PHYSIQUE          /            \        PERSONALITY         |
+|           (Wujud Fisik)     /              \       (Karakter)          |
+|            [✓]             /                \       [✓]                |
+|                           /                  \                         |
+|                          /                    \                        |
+|         RELATIONSHIP ----+                    +---- REFLECTION         |
+|         (Relasi)    [✓]  |      CULTURE       |     (Citra)      [✓]   |
+|                          |      (Budaya)      |                        |
+|                          |       [✓]          |                        |
+|                          |                    |                        |
+|                          \                    /                        |
+|                           \                  /                         |
+|                            \                /                          |
+|                             \              /                           |
+|                              \            /                            |
+|                         [ PICTURE OF RECEIVER ]                        |
+|                                                                       |
+|                               SELF-IMAGE                              |
+|                              (Citra Diri)                             |
+|                                  [✓]                                  |
+|                                                                       |
+|  Status: Semua sisi telah diisi. Prisma Lengkap!                      |
+|  [ Lihat Visual Brief ]                                               |
++-----------------------------------------------------------------------+
+```
+
+**Panel Samping (Saat "Culture" Diklik):**
+
+```text
++---------------------------------------------------+
+|  SISI: CULTURE (Budaya & Sistem Nilai)            |
++---------------------------------------------------+
+|  [✨ AI Suggest]  "Apa nilai inti perusahaan?"    |
+|                                                   |
+|  Deskripsi Budaya:                                |
+|  [ Kami percaya pada kejujuran bahan dan proses. ]|
+|  [ Kopi bukan sekadar kafein, tapi ritual yang   ]|
+|  [ menghubungkan manusia dengan alam.            ]|
+|                                                   |
+|  **Bagaimana budaya ini diekspresikan secara visual?** |
+|                                                   |
+|  (✓) Gunakan material dan tekstur alami.          |
+|  (✓) Hindari plastik atau elemen sintetis.        |
+|  (✓) Tampilkan proses (misal: tangan petani).     |
+|  ( ) Gunakan warna-warna cerah dan mencolok.      |
+|                                                   |
+|  Terhubung dengan:                                |
+|  • Physique: "Kemasan kaca daur ulang"            |
+|  • Relationship: "Edukasi, bukan menggurui"       |
+|                                                   |
+|  [ Simpan ]                                       |
++---------------------------------------------------+
+```
+
+---
+
+### Modul 7.3: AI Color & Typography Engine
+
+#### Tujuan
+Menghasilkan palet warna dan rekomendasi pasangan font yang secara teoritis selaras dengan **Arketipe Merek** (Pilar 1), **Visual DNA Keywords** (Modul 7.1), dan **Industri** pengguna. Mesin ini menghilangkan subjektivitas dalam pemilihan warna dan font.
+
+#### Alur Kerja (Workflow)
+
+1. **Input Data:**
+   - Sistem secara otomatis mengambil:
+     - **Arketipe Primer** dari Pilar 1.
+     - **Visual DNA Keywords** dari Modul 7.1.
+     - **Industri** dari pengaturan *workspace*.
+
+2. **Generasi Palet Warna (AI):**
+   - AI (**/ai/visual/palette**) memproses input.
+   - AI merujuk pada **psikologi warna** yang terkait dengan arketipe:
+     - *The Magician:* Ungu, Emas, Gradien Misterius, Hitam.
+     - *The Hero:* Merah Berani, Biru Navy, Putih, Metalik.
+     - *The Caregiver:* Pastel Lembut, Krem, Oranye Hangat.
+     - *The Sage:* Biru Tua, Abu-abu, Hijau Sage.
+     - *The Creator:* Palet Berani, Warna Primer, Kontras Tinggi.
+   - AI menghasilkan **3 opsi palet warna** (masing-masing terdiri dari 4-5 warna: Primer, Sekunder, Aksen, Netral).
+
+3. **Generasi Tipografi (AI):**
+   - AI (**/ai/visual/typography**) memproses input yang sama.
+   - AI merujuk pada **psikologi tipografi**:
+     - *Serif:* Klasik, Elegan, Terpercaya.
+     - *Sans-Serif:* Modern, Bersih, Minimalis.
+     - *Display:* Unik, Ekspresif, Berkarakter.
+   - AI menghasilkan **3 opsi pasangan font** (Heading & Body) dari Google Fonts atau pustaka font sistem.
+
+4. **Pemilihan & Kustomisasi Pengguna:**
+   - Pengguna melihat opsi yang dihasilkan.
+   - Pengguna dapat memilih satu opsi, atau mengedit manual (misal: mengganti satu warna).
+   - Setelah dipilih, palet dan font disimpan ke **Living Brand Guidelines (Pilar 2)**.
+
+#### Konsep UI/UX
+
+**Halaman Color & Typography Engine:**
+
+```text
++-----------------------------------------------------------------------+
+|  AI COLOR & TYPOGRAPHY ENGINE - Hening Coffee                         |
++-----------------------------------------------------------------------+
+|                                                                       |
+|  Berdasarkan: Arketipe = The Magician | Keywords = Minimalis, Tenang  |
+|                                                                       |
+|  ---------------------------------------------------------            |
+|  PALET WARNA (Pilih Salah Satu)                                       |
+|                                                                       |
+|  Opsi 1 - "Mystic Calm" (Rekomendasi AI 92%)                          |
+|  +-------------------------------------------------------+            |
+|  | [Primer]  [Sekunder] [Aksen]  [Netral 1] [Netral 2]   |            |
+|  | #1A3A4A   #D9C5A0    #C87A36  #F5F0E8    #2B2B2B      |            |
+|  | (Deep Blue)(Sand)    (Copper) (Cream)    (Charcoal)   |            |
+|  |                                                       |            |
+|  | [ Pilih Palet Ini ]                                   |            |
+|  +-------------------------------------------------------+            |
+|                                                                       |
+|  Opsi 2 - "Zen Garden"                                               |
+|  +-------------------------------------------------------+            |
+|  | [Primer]  [Sekunder] [Aksen]  [Netral 1] [Netral 2]   |            |
+|  | #2E5A4C   #E8D5B5    #B87B4D  #FFFFFF    #3A3A3A      |            |
+|  | ...                                                   |            |
+|  | [ Pilih Palet Ini ]                                   |            |
+|  +-------------------------------------------------------+            |
+|                                                                       |
+|  Opsi 3 - "Midnight Bloom"                                           |
+|  ...                                                                  |
+|                                                                       |
+|  ---------------------------------------------------------            |
+|  TIPOGRAFI (Pilih Salah Satu)                                         |
+|                                                                       |
+|  Opsi 1 - "Modern Poetic" (Rekomendasi AI 95%)                        |
+|  +-------------------------------------------------------+            |
+|  | Heading: **Playfair Display** (Serif, Elegan)         |            |
+|  | Body:    **Inter** (Sans-Serif, Bersih)               |            |
+|  |                                                       |            |
+|  | [Preview Teks dengan font ini]                        |            |
+|  | [ Pilih Pasangan Font Ini ]                           |            |
+|  +-------------------------------------------------------+            |
+|                                                                       |
+|  [ Simpan Pilihan & Lanjutkan ke Moodboard ]                          |
++-----------------------------------------------------------------------+
+```
+
+**Panel Edit Manual (Jika Pengguna Ingin Kustomisasi):**
+
+```text
++---------------------------------------------------+
+|  EDIT PALET - "Mystic Calm"                       |
++---------------------------------------------------+
+|                                                   |
+|  Warna Primer:                                    |
+|  [ Color Picker: #1A3A4A ]                        |
+|  [✓] Kunci warna ini dari perubahan AI            |
+|                                                   |
+|  Warna Sekunder:                                  |
+|  [ Color Picker: #D9C5A0 ]                        |
+|                                                   |
+|  Warna Aksen:                                     |
+|  [ Color Picker: #C87A36 ]                        |
+|                                                   |
+|  AI Validasi:                                     |
+|  ✅ Kontras cukup untuk aksesibilitas (WCAG AA).  |
+|  ✅ Harmonis dengan arketipe The Magician.        |
+|                                                   |
+|  [ Simpan Perubahan ]                             |
++---------------------------------------------------+
+```
+
+---
+
+### Modul 7.4: AI Moodboard Generator
+
+#### Tujuan
+Menghemat waktu *brainstorming* visual dengan menghasilkan *moodboard* otomatis berdasarkan **Visual DNA Keywords** dan palet warna yang telah dipilih. *Moodboard* ini berfungsi sebagai referensi visual bagi desainer atau sebagai inspirasi untuk konten media sosial.
+
+#### Alur Kerja (Workflow)
+
+1. **Input:**
+   - **Visual DNA Keywords** (dari Modul 7.1).
+   - **Palet Warna Terpilih** (dari Modul 7.3).
+   - **Industri** (dari pengaturan *workspace*).
+
+2. **Generasi Moodboard (AI):**
+   - AI (**/ai/visual/moodboard**) mencari gambar dari pustaka bebas royalti (terintegrasi dengan Unsplash, Pexels, atau pustaka internal).
+   - AI memilih 6-9 gambar yang secara visual selaras dengan *keywords* dan palet warna.
+   - AI menyusun gambar dalam tata letak *grid* yang estetis.
+
+3. **Kustomisasi Pengguna:**
+   - Pengguna dapat:
+     - Mengganti gambar dengan mencari dari pustaka.
+     - Mengunggah gambar sendiri.
+     - Mengatur ulang tata letak (*drag-and-drop*).
+     - Menambahkan catatan atau anotasi.
+
+4. **Penyimpanan:**
+   - *Moodboard* yang telah disetujui disimpan ke **DAM (Pilar 2)** sebagai aset referensi.
+   - Dapat juga ditambahkan ke **Living Brand Guidelines**.
+
+#### Konsep UI/UX
+
+**Halaman Moodboard Generator:**
+
+```text
++-----------------------------------------------------------------------+
+|  AI MOODBOARD GENERATOR - Hening Coffee                               |
++-----------------------------------------------------------------------+
+|                                                                       |
+|  Berdasarkan: Keywords = Minimalis, Tenang, Alami, Earthy             |
+|              Palet = #1A3A4A, #D9C5A0, #C87A36                        |
+|                                                                       |
+|  Opsi Moodboard yang Dihasilkan:                                      |
+|                                                                       |
+|  Opsi 1 - "Morning Ritual"                                            |
+|  +-------------------------------------------------------+            |
+|  | [Gbr 1] [Gbr 2] [Gbr 3]                               |            |
+|  | [Gbr 4] [Gbr 5] [Gbr 6]                               |            |
+|  | [Gbr 7] [Gbr 8] [Gbr 9]                               |            |
+|  |                                                       |            |
+|  | [ Pilih Moodboard Ini ]  [ Edit ]                     |            |
+|  +-------------------------------------------------------+            |
+|                                                                       |
+|  Opsi 2 - "Zen Stillness"                                             |
+|  +-------------------------------------------------------+            |
+|  | [Gbr 1] [Gbr 2] [Gbr 3]                               |            |
+|  | ...                                                   |            |
+|  | [ Pilih Moodboard Ini ]  [ Edit ]                     |            |
+|  +-------------------------------------------------------+            |
+|                                                                       |
+|  [ Generate Ulang ]                                                   |
++-----------------------------------------------------------------------+
+```
+
+**Tampilan Editor Moodboard (Setelah Klik "Edit"):**
+
+```text
++-----------------------------------------------------------------------+
+|  EDIT MOODBOARD - "Morning Ritual"                                    |
++-----------------------------------------------------------------------+
+|  +---------------------------+  +-----------------------------------+ |
+|  |                           |  | PUSTAKA GAMBAR                    | |
+|  |   [GRID MOODBOARD]        |  | [🔍 Cari gambar...]               | |
+|  |   (Drag & drop untuk      |  |                                   | |
+|  |    mengatur ulang)        |  | [Thumb] [Thumb] [Thumb] [Thumb]   | |
+|  |                           |  |                                   | |
+|  |   Klik gambar untuk       |  | [Thumb] [Thumb] [Thumb] [Thumb]   | |
+|  |   mengganti.              |  |                                   | |
+|  |                           |  | [Thumb] [Thumb] [Thumb] [Thumb]   | |
+|  |                           |  |                                   | |
+|  |                           |  | [Unggah Gambar Sendiri]            | |
+|  +---------------------------+  +-----------------------------------+ |
+|                                                                       |
+|  Palet Warna Terkunci: [#1A3A4A] [#D9C5A0] [#C87A36] [#F5F0E8]        |
+|                                                                       |
+|  [ Simpan Moodboard ]  [ Batalkan ]                                   |
++-----------------------------------------------------------------------+
+```
+
+---
+
+### Modul 7.5: Visual DNA Summary
+
+#### Tujuan
+Menyediakan ringkasan satu halaman yang merangkum seluruh identitas visual merek. Halaman ini berfungsi sebagai "kartu identitas visual" yang dapat dengan cepat dibagikan ke tim atau klien, dan menjadi fondasi untuk semua keputusan desain selanjutnya.
+
+#### Alur Kerja (Workflow)
+
+1. **Kompilasi Otomatis:**
+   - Sistem secara otomatis mengumpulkan data dari:
+     - **Pilar 1:** Brand Essence, Arketipe, Brand Mantra.
+     - **Modul 7.1:** Visual DNA Keywords.
+     - **Modul 7.3:** Palet Warna, Tipografi.
+     - **Modul 7.4:** Moodboard terpilih.
+
+2. **Tampilan Ringkasan:**
+   - Halaman menampilkan semua elemen dalam tata letak yang bersih dan profesional.
+   - Setiap elemen memiliki tombol **"Salin"** (untuk kode HEX, nama font) atau **"Ekspor"**.
+
+3. **Ekspor & Integrasi:**
+   - **Ekspor sebagai PDF:** Untuk dibagikan ke printer atau vendor.
+   - **Ekspor sebagai CSS Variables:** Untuk langsung digunakan oleh pengembang web.
+   - **Kirim ke Living Brand Guidelines (Pilar 2):** Menjadi bagian dari panduan merek interaktif.
+
+#### Konsep UI/UX
+
+```text
++-----------------------------------------------------------------------+
+|  VISUAL DNA SUMMARY - Hening Coffee                   [Ekspor PDF]     |
++-----------------------------------------------------------------------+
+|                                                                       |
+|  +--------------------------------+  +--------------------------------+ |
+|  | BRAND ESSENCE                  |  | ARCHETYPE                      | |
+|  | "Kesadaran Hening"             |  | The Magician                   | |
+|  +--------------------------------+  +--------------------------------+ |
+|                                                                       |
+|  +------------------------------------------------------------------+ |
+|  | VISUAL DNA KEYWORDS                                               | |
+|  | [Minimalis] [Tenang] [Alami] [Kontemplatif] [Earthy] [Presisi]    | |
+|  +------------------------------------------------------------------+ |
+|                                                                       |
+|  +------------------------------------------------------------------+ |
+|  | PALET WARNA                                                       | |
+|  | [Primer]  [Sekunder] [Aksen]  [Netral 1] [Netral 2]               | |
+|  | #1A3A4A   #D9C5A0    #C87A36  #F5F0E8    #2B2B2B                  | |
+|  | [Salin Hex] [Salin Hex] [Salin Hex] [Salin Hex] [Salin Hex]       | |
+|  +------------------------------------------------------------------+ |
+|                                                                       |
+|  +------------------------------------------------------------------+ |
+|  | TIPOGRAFI                                                         | |
+|  | Heading: Playfair Display (Serif, 700)    [Salin Kode CSS]        | |
+|  | Body:    Inter (Sans-Serif, 400)          [Salin Kode CSS]        | |
+|  +------------------------------------------------------------------+ |
+|                                                                       |
+|  +------------------------------------------------------------------+ |
+|  | MOODBOARD TERPILIH - "Morning Ritual"                             | |
+|  | [Preview kecil grid moodboard]                    [Lihat Penuh]   | |
+|  +------------------------------------------------------------------+ |
+|                                                                       |
+|  [ Kirim ke Living Brand Guidelines ]  [ Ekspor CSS Variables ]       |
++-----------------------------------------------------------------------+
+```
+
+---
+
+### 6. Integrasi dengan Pilar Lain
+
+| Output Pilar 7 | Digunakan di Pilar Lain | Fungsi |
+| :--- | :--- | :--- |
+| **Palet Warna & Tipografi** | **Pilar 2 (Living Brand Guidelines)** | Menjadi aturan yang mengunci editor di Pilar 3. |
+| **Palet Warna & Tipografi** | **Pilar 3 (Template Lockdown Editor)** | Mengunci opsi warna dan font di editor desain. |
+| **Visual DNA Keywords** | **Pilar 4 (Brand Amplifier)** | Memandu AI untuk analisis sentimen visual. |
+| **Moodboard** | **Pilar 2 (DAM)** | Disimpan sebagai aset referensi. |
+| **Seluruh Ringkasan** | **Pilar 5 (White-Label Reporting)** | Dapat disertakan dalam laporan klien. |
+
+---
+
+Dokumen ini melengkapi spesifikasi **Pilar 6** dan **Pilar 7**, menyelesaikan seluruh arsitektur platform **BrandOS**.

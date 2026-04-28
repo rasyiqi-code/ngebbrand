@@ -1,0 +1,433 @@
+Berikut adalah dokumen spesifikasi rinci untuk **Pilar 3: Brand Expression Studio**. Pilar ini adalah mesin eksekusi konten yang memungkinkan tim internal dan klien membuat materi pemasaran *on-brand* dalam hitungan menit, tanpa risiko melanggar panduan merek.
+
+---
+
+## 📁 Pilar 3: Brand Expression Studio (Pembuatan Konten Cepat & Terkunci)
+
+### 1. Tujuan Pilar
+
+Menyediakan lingkungan desain dan penulisan yang **terkunci secara cerdas** pada panduan merek yang telah ditetapkan di Pilar 1 (Strategi) dan Pilar 2 (Aset & Aturan). Pilar ini memungkinkan siapa pun—dari desainer profesional hingga tim pemasaran umum—untuk menghasilkan konten visual dan teks yang konsisten, cepat, dan sesuai standar merek, tanpa memerlukan keahlian desain mendalam atau aplikasi terpisah.
+
+### 2. Arsitektur Modul
+
+Pilar 3 terdiri dari empat modul utama yang saling terintegrasi:
+
+| No. | Nama Modul | Fungsi Utama | Prioritas |
+| :-- | :--- | :--- | :--- |
+| 1 | **Template Lockdown Editor** | Editor desain berbasis web dengan elemen merek terkunci (warna, font, logo). | P0 (MVP) |
+| 2 | **Brand Voice AI Writer** | Asisten penulisan AI yang telah dilatih dengan *tone of voice* dan persona merek. | P1 |
+| 3 | **One-Click Resizing & Adaptation** | Ubah ukuran desain untuk berbagai platform (Instagram, LinkedIn, Story, dll.) dalam satu klik. | P1 |
+| 4 | **Smart Template Library** | Pustaka templat siap pakai yang dikurasi berdasarkan industri dan arketipe merek. | P0 (MVP) |
+
+---
+
+## 📄 Spesifikasi Fitur per Modul
+
+### Modul 3.1: Template Lockdown Editor
+
+#### Tujuan
+Memberikan pengalaman desain *drag-and-drop* yang intuitif seperti Canva, tetapi dengan **elemen-elemen kunci merek yang telah dikunci** oleh administrator. Ini mencegah kesalahan umum seperti penggunaan warna di luar palet, font yang salah, atau modifikasi logo yang tidak sah.
+
+#### Alur Kerja (Workflow)
+
+1. **Inisialisasi Desain:**
+   - Pengguna membuka **Brand Expression Studio**.
+   - Memilih **"Buat Desain Baru"**.
+   - Memilih jenis konten (misal: *Instagram Post*, *Facebook Cover*, *Presentation Slide*, *Email Header*).
+
+2. **Pemuatan Template:**
+   - Sistem menampilkan daftar templat yang tersedia untuk jenis konten tersebut.
+   - Templat dikategorikan berdasarkan kampanye, musim, atau tujuan.
+   - Setiap templat sudah memiliki struktur, *placeholder* gambar, dan area teks yang telah ditata dengan **font dan warna merek yang terkunci**.
+
+3. **Pengeditan Terbatas:**
+   - Pengguna dapat:
+     - Mengganti teks *placeholder* dengan konten mereka sendiri. **Font, ukuran, dan warna teks otomatis mengikuti gaya yang telah ditentukan.**
+     - Mengunggah atau memilih gambar dari **DAM (Pilar 2)** ke dalam *placeholder* gambar.
+     - Memindahkan elemen dalam batasan *grid* yang telah ditentukan.
+     - Menampilkan atau menyembunyikan lapisan opsional (misal: stiker, *shape*).
+   - Pengguna **tidak dapat**:
+     - Mengubah warna teks atau *shape* (palet terkunci).
+     - Mengubah jenis font.
+     - Mengubah logo (logo adalah elemen terkunci yang hanya bisa ditampilkan/dihilangkan).
+     - Mengubah *clear space* logo (diatur di Pilar 2).
+
+4. **Penyimpanan & Ekspor:**
+   - Pengguna menyimpan desain ke **DAM** sebagai versi baru.
+   - Pengguna dapat mengunduh dalam format PNG, JPG, atau PDF (cetak).
+   - Opsi **"Bagikan untuk Ditinjau"** menghasilkan tautan di mana *reviewer* dapat memberikan komentar langsung pada desain (mirip Figma).
+
+#### Konsep UI/UX
+
+**Halaman Utama Editor:**
+
+```text
++-----------------------------------------------------------------------+
+|  [Logo BrandOS]  File  Edit  View  [Undo] [Redo]          [Share] [⏷] |
++-----------------------------------------------------------------------+
+|  +----------------+  +------------------------------------------------+
+|  |                |  |                                                |
+|  |  TEMPLATES     |  |      CANVAS AREA                               |
+|  |  [Search...]   |  |                                                |
+|  |                |  |      [Preview desain yang sedang diedit]       |
+|  |  - Social      |  |                                                |
+|  |    • Instagram |  |      (Area ini menampilkan grid dan elemen     |
+|  |    • Story     |  |       yang dapat dipindahkan)                  |
+|  |    • Facebook  |  |                                                |
+|  |  - Marketing   |  |                                                |
+|  |    • Email     |  |                                                |
+|  |    • Banner    |  |                                                |
+|  |  - Presentation|  |                                                |
+|  |                |  |                                                |
+|  |  MY BRAND      |  |                                                |
+|  |  ASSETS (DAM)  |  |                                                |
+|  |  [Logo] [Foto] |  |                                                |
+|  |                |  |                                                |
+|  +----------------+  +------------------------------------------------+
+|                                                                       |
+|  +-------------------------------------------------------------------+
+|  | PROPERTIES PANEL (Konteks: Saat teks dipilih)                      |
+|  | [🔒] Font: Poppins Bold (Terkunci oleh Brand Guidelines)           |
+|  | [🔒] Warna: Primary #1A2B3C (Terkunci)                             |
+|  | [✓] Ukuran: [ 32 ] px                                             |
+|  | [✓] Perataan: [Kiri] [Tengah] [Kanan]                             |
+|  |                                                                   |
+|  | [ Ganti Teks Placeholder ]                                         |
+|  +-------------------------------------------------------------------+
++-----------------------------------------------------------------------+
+```
+
+**Fitur "Locked Elements" - Indikator Visual:**
+
+```text
++-----------------------------------------------+
+|  LAYER YANG TERKUNCI (Tidak Dapat Diedit)     |
++-----------------------------------------------+
+|  🔒 Logo Utama (Posisi & Ukuran Terkunci)     |
+|  🔒 Palet Warna (Hanya 4 Warna Ini)           |
+|  🔒 Font Heading & Body (Poppins, Inter)      |
+|  🔒 Clear Space Logo (Padding Otomatis)       |
++-----------------------------------------------+
+```
+
+**Popup Peringatan Saat Mencoba Mengubah Elemen Terkunci:**
+
+```text
++---------------------------------------------------+
+|  ⚠️ ELEMEN TERKUNCI                                |
++---------------------------------------------------+
+|  Anda tidak dapat mengubah warna teks ini.         |
+|  Warna telah diatur ke Primary (#1A2B3C) sesuai    |
+|  Brand Guidelines.                                 |
+|                                                   |
+|  [ Mengerti ]  [ Lihat Panduan Merek ]             |
++---------------------------------------------------+
+```
+
+---
+
+### Modul 3.2: Brand Voice AI Writer
+
+#### Tujuan
+Memberikan asisten penulisan AI yang terintegrasi dalam editor, yang menghasilkan teks (*caption*, *headline*, *body copy*) yang secara otomatis sesuai dengan **Brand Voice** yang telah didefinisikan di Pilar 1 (Arketipe, Brand Mantra, Tone of Voice) dan Pilar 7.
+
+#### Alur Kerja (Workflow)
+
+1. **Akses AI Writer:**
+   - Di dalam **Template Lockdown Editor**, saat pengguna mengklik area teks, tombol **✨ AI Writer** muncul di *properties panel*.
+   - Atau, pengguna dapat membuka **AI Writer** sebagai modul terpisah untuk membuat draf sebelum mendesain.
+
+2. **Input Pengguna:**
+   - Pengguna memberikan *prompt* singkat tentang apa yang ingin disampaikan.
+     - *Contoh:* "Promo diskon 20% untuk pembelian pertama kopi cold brew."
+   - Atau pengguna memilih dari **template prompt** yang disediakan sistem:
+     - "Tulis caption inspiratif untuk pagi hari."
+     - "Buat headline untuk banner website."
+     - "Tulis deskripsi produk singkat."
+
+3. **Proses AI (Brand Voice Aware):**
+   - Sistem mengirimkan *prompt* ke LLM (misal: GPT-4) yang telah **di-fine-tune** atau diberikan **system prompt** khusus berdasarkan data merek dari Pilar 1 dan Pilar 7.
+   - *System prompt* berisi:
+     - **Brand Archetype:** The Magician
+     - **Tone of Voice:** Inspiratif, puitis, tenang.
+     - **Brand Mantra:** "Hening yang Menggerakkan"
+     - **Target Audience:** Profesional muda urban yang sibuk.
+     - **Kata yang Dilarang:** "Murah", "Diskon besar-besaran" (jika tidak sesuai positioning premium).
+
+4. **Hasil & Iterasi:**
+   - AI menghasilkan 3-5 opsi teks.
+   - Setiap opsi menampilkan **"Voice Match Score"** (persentase kesesuaian dengan *brand voice*).
+   - Pengguna dapat:
+     - Memilih satu opsi untuk langsung dimasukkan ke editor.
+     - Meminta AI untuk **"Buat lebih formal"** atau **"Buat lebih pendek"**.
+     - Mengedit manual teks yang dihasilkan.
+
+#### Konsep UI/UX
+
+**Panel AI Writer di Dalam Editor:**
+
+```text
++---------------------------------------------------+
+|  ✨ AI WRITER - Tulis Caption Instagram            |
++---------------------------------------------------+
+|                                                   |
+|  Apa yang ingin Anda sampaikan?                   |
+|  [ "Promo peluncuran varian baru: Cold Brew       |
+|    dengan infused bunga telang." ]                |
+|                                                   |
+|  Nada: [Inspiratif ▼] [Panjang: Sedang ▼]         |
+|                                                   |
+|  [ Generate ]                                      |
+|                                                   |
+|  ------------------------------------------------- |
+|  HASIL (Voice Match Score)                         |
+|                                                   |
+|  Opsi 1 (98% cocok):                              |
+|  "Kesadaran hadir dalam setiap tegukan. 🌿        |
+|   Kenalkan varian baru kami: Cold Brew Bunga      |
+|   Telang. Ketenangan biru alami yang               |
+|   menyegarkan pikiran. Hadir mulai besok."         |
+|  [ Gunakan ] [ Edit ]                              |
+|                                                   |
+|  Opsi 2 (92% cocok):                              |
+|  "Warna baru, ketenangan yang sama... "           |
+|  [ Gunakan ] [ Edit ]                              |
+|                                                   |
+|  Opsi 3 (85% cocok):                              |
+|  "Bunga Telang + Cold Brew = ..."                 |
+|  [ Gunakan ] [ Edit ]                              |
+|                                                   |
+|  [ Buat Lebih Pendek ] [ Buat Lebih Puitis ]       |
++---------------------------------------------------+
+```
+
+**Tampilan Modul AI Writer Mandiri (Untuk Brainstorming):**
+
+```text
++---------------------------------------------------------------+
+|  BRAND VOICE AI WRITER - Hening Coffee                        |
++---------------------------------------------------------------+
+|                                                               |
+|  Brand Voice Aktif: The Magician (Inspiratif, Tenang, Puitis) |
+|  [ Ganti Nada Sementara... ]                                  |
+|                                                               |
+|  [ Text Area untuk Prompt Bebas ]                             |
+|                                                               |
+|  Jenis Konten:                                                |
+|  [Caption IG] [Headline] [Deskripsi Produk] [Email Subject]   |
+|                                                               |
+|  [ Generate ]                                                 |
+|                                                               |
+|  ---------------------------------------------------------    |
+|  HASIL GENERASI                                               |
+|  [Daftar opsi teks dengan skor]                               |
+|                                                               |
+|  [ Simpan ke Perpustakaan Konten ]  [ Ekspor ke Editor ]      |
++---------------------------------------------------------------+
+```
+
+---
+
+### Modul 3.3: One-Click Resizing & Adaptation
+
+#### Tujuan
+Memungkinkan pengguna untuk membuat satu desain master dan secara otomatis menghasilkan varian untuk berbagai platform (Instagram Feed, Story, Facebook, LinkedIn, Email Header, dll.) dengan penyesuaian tata letak cerdas, tanpa harus mendesain ulang dari awal.
+
+#### Alur Kerja (Workflow)
+
+1. **Desain Master:**
+   - Pengguna menyelesaikan desain untuk satu format (misal: *Instagram Square 1080x1080*).
+
+2. **Aktifkan Fitur Resize:**
+   - Pengguna mengklik tombol **"Resize & Adapt"** di toolbar atas.
+
+3. **Pilih Platform Target:**
+   - Sistem menampilkan daftar format yang didukung:
+     - Instagram Story (1080x1920)
+     - Instagram Portrait (1080x1350)
+     - Facebook Post (1200x630)
+     - LinkedIn Post (1200x627)
+     - Twitter/X Post (1600x900)
+     - Email Header (600x200)
+     - Blog Featured Image (1200x800)
+     - Custom Size
+
+4. **Proses Adaptasi Cerdas (AI-Powered):**
+   - Sistem tidak sekadar memotong (*crop*) gambar.
+   - AI menganalisis elemen desain:
+     - **Teks:** Mengatur ulang perataan dan ukuran agar tetap proporsional di kanvas baru.
+     - **Gambar Latar:** Memperluas kanvas dengan *content-aware fill* (jika memungkinkan) atau menyarankan penggantian gambar dari DAM.
+     - **Logo & Elemen Grafis:** Mempertahankan posisi relatif (misal: tetap di pojok kanan bawah).
+
+5. **Tinjauan & Penyesuaian Manual (Opsional):**
+   - Sistem menampilkan pratinjau semua varian dalam tampilan *grid*.
+   - Pengguna dapat mengklik varian untuk melakukan penyesuaian manual kecil jika diperlukan (dalam batasan elemen terkunci).
+   - Pengguna menyetujui semua varian.
+
+6. **Ekspor Batch:**
+   - Pengguna mengunduh semua varian dalam satu file ZIP, atau menyimpannya langsung ke folder DAM.
+
+#### Konsep UI/UX
+
+**Toolbar dengan Tombol "Resize & Adapt":**
+
+```text
++-----------------------------------------------------------------------+
+| [Save] [Undo] [Redo]  |  [🔍 Zoom]  |  [📱 Resize & Adapt]  [⬇ Download]|
++-----------------------------------------------------------------------+
+```
+
+**Modal "Resize & Adapt":**
+
+```text
++---------------------------------------------------------------+
+|  RESIZE & ADAPT - Pilih Format Target                  [X]     |
++---------------------------------------------------------------+
+|                                                               |
+|  Desain Sumber: Instagram Post (1080x1080)                    |
+|                                                               |
+|  Format yang Direkomendasikan:                                 |
+|  [✓] Instagram Story (1080x1920)                              |
+|  [✓] Facebook / LinkedIn Post (1200x630)                      |
+|  [ ] Twitter Post (1600x900)                                  |
+|  [ ] Email Header (600x200)                                   |
+|  [ ] Custom...                                                |
+|                                                               |
+|  Opsi Adaptasi:                                               |
+|  (●) Cerdas (AI akan menyesuaikan tata letak)                 |
+|  ( ) Pangkas Sederhana (Potong bagian tengah)                 |
+|                                                               |
+|  [ Batalkan ]  [ Lanjutkan Adaptasi ]                         |
++---------------------------------------------------------------+
+```
+
+**Tampilan Tinjauan Varian (Setelah Adaptasi):**
+
+```text
++---------------------------------------------------------------+
+|  TINJAU VARIAN - Lakukan Penyesuaian Jika Perlu               |
++---------------------------------------------------------------+
+|                                                               |
+|  +-------------------+  +-------------------+  +-------------+ |
+|  | [Preview IG Feed] |  | [Preview Story]   |  | [Preview FB]| |
+|  | (Master)          |  | (Adaptasi AI)     |  | (Adaptasi)  | |
+|  |                   |  | [Ada peringatan:  |  |             | |
+|  |                   |  |  Teks terlalu     |  |             | |
+|  |                   |  |  panjang? Edit]   |  |             | |
+|  +-------------------+  +-------------------+  +-------------+ |
+|                                                               |
+|  Klik varian untuk mengedit manual.                           |
+|                                                               |
+|  [ Kembali ]  [ Setujui Semua & Simpan/Ekspor ]               |
++---------------------------------------------------------------+
+```
+
+---
+
+### Modul 3.4: Smart Template Library
+
+#### Tujuan
+Menyediakan pustaka templat siap pakai yang terus bertambah, dikurasi berdasarkan **industri** (F&B, Teknologi, Fashion, dll.) dan **arketipe merek** (The Magician, The Hero, dll.) yang telah dipilih di Pilar 1. Templat ini dirancang oleh desainer profesional dan sudah **terintegrasi dengan sistem penguncian merek**.
+
+#### Alur Kerja (Workflow)
+
+1. **Jelajahi Pustaka:**
+   - Pengguna mengakses **Template Library** dari dashboard utama.
+   - Filter tersedia:
+     - **Format:** Semua, Instagram, Presentasi, Banner, dll.
+     - **Industri:** F&B, Teknologi, Kecantikan, Pendidikan, dll.
+     - **Gaya Visual:** Minimalis, Bold, Elegan, Playful, dll.
+     - **Arketipe:** The Magician, The Creator, The Sage, dll. (otomatis disaring berdasarkan arketipe merek pengguna).
+
+2. **Pratinjau & Gunakan:**
+   - Klik templat untuk melihat pratinjau penuh dengan *placeholder* konten.
+   - Tombol **"Gunakan Templat Ini"** akan membuka templat di **Template Lockdown Editor**.
+
+3. **Personalisasi Otomatis:**
+   - Saat templat dibuka, sistem secara otomatis:
+     - Menyuntikkan **logo merek** ke *placeholder* logo.
+     - Mengganti palet warna templat dengan **palet merek pengguna** (dari Pilar 7).
+     - Mengganti font *placeholder* dengan **font merek pengguna**.
+   - Ini memastikan templat langsung terasa "milik merek" tanpa perlu pengaturan manual.
+
+4. **Unggah Templat Kustom (Untuk Agensi):**
+   - Pengguna dengan peran **Admin** dapat mengunggah desain kustom (dibuat di Figma/Adobe XD) sebagai templat.
+   - Admin dapat menandai area mana yang dapat diedit dan mana yang dikunci.
+   - Templat kustom hanya terlihat di dalam *workspace* agensi/klien tersebut.
+
+#### Konsep UI/UX
+
+**Halaman Pustaka Templat:**
+
+```text
++---------------------------------------------------------------+
+|  TEMPLATE LIBRARY                              [Cari templat]  |
++---------------------------------------------------------------+
+|  Filter: [Semua Format ▼] [F&B ▼] [Minimalis ▼]               |
+|                                                               |
+|  Direkomendasikan untuk Anda (The Magician):                   |
+|  +----------------+  +----------------+  +----------------+    |
+|  | [Preview]      |  | [Preview]      |  | [Preview]      |    |
+|  | "Mystic Morning|  | "Golden Hour"  |  | "Simple Quote"  |    |
+|  |  Post"         |  |  Story         |  |  Square         |    |
+|  | [Gunakan]      |  | [Gunakan]      |  | [Gunakan]      |    |
+|  +----------------+  +----------------+  +----------------+    |
+|                                                               |
+|  Semua Templat Instagram Feed:                                 |
+|  +----------------+  +----------------+  +----------------+    |
+|  | [Preview]      |  | [Preview]      |  | [Preview]      |    |
+|  | ...            |  | ...            |  | ...            |    |
+|  +----------------+  +----------------+  +----------------+    |
+|                                                               |
+|  [ Muat Lebih Banyak ]                                        |
+|                                                               |
+|  (Admin Only) [ + Unggah Templat Kustom ]                     |
++---------------------------------------------------------------+
+```
+
+**Modal Pratinjau Templat:**
+
+```text
++---------------------------------------------------+
+|  TEMPLAT: "Mystic Morning Post"            [X]     |
++---------------------------------------------------+
+|                                                   |
+|  [Preview Besar Templat dengan placeholder konten] |
+|                                                   |
+|  Info:                                            |
+|  Format: Instagram Square (1080x1080)             |
+|  Gaya: Minimalis, Elegan                          |
+|  Cocok untuk: The Magician, The Creator           |
+|                                                   |
+|  **Personalisasi Otomatis Saat Digunakan:**        |
+|  • Logo Anda akan ditempatkan di sini.            |
+|  • Warna akan diubah ke palet merek Anda.          |
+|  • Font akan diubah ke Poppins/Inter.             |
+|                                                   |
+|  [ Gunakan Templat Ini ]   [ Simpan ke Favorit ]   |
++---------------------------------------------------+
+```
+
+---
+
+### 5. Integrasi Antar Modul dalam Pilar 3
+
+```mermaid
+graph TD
+    A[Smart Template Library] -->|Pilih templat| B[Template Lockdown Editor]
+    B -->|Panggil AI untuk teks| C[Brand Voice AI Writer]
+    B -->|Selesai desain| D[One-Click Resizing]
+    D -->|Hasil varian| E[DAM Pilar 2]
+    C -->|Gunakan data brand| F[Pilar 1 & Pilar 7]
+    B -->|Ambil aset| E
+    B -->|Aturan terkunci dari| G[Pilar 2 Living Guidelines]
+```
+
+### 6. Integrasi dengan Pilar Lain
+
+| Dari Pilar 3 | Ke Pilar Lain | Fungsi |
+| :--- | :--- | :--- |
+| **Desain yang Dibuat** | **Pilar 2 (DAM)** | Disimpan sebagai aset baru, dapat digunakan kembali. |
+| **Konten Teks AI** | **Pilar 4 (Brand Amplifier)** | Langsung digunakan untuk penjadwalan postingan. |
+| **Data Penggunaan Templat** | **Pilar 5 (Agency Hub)** | Analitik templat mana yang paling sering digunakan klien. |
+| **Aturan Warna/Font** | **Dari Pilar 2 & Pilar 7** | Mengunci editor agar sesuai panduan. |

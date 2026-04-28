@@ -1,0 +1,547 @@
+## 📁 Pilar 2: Brand Fortress (Manajemen Aset & Tata Kelola Merek)
+
+### 1. Tujuan Pilar
+
+Menyediakan sistem manajemen aset digital (DAM) yang tidak hanya menyimpan file, tetapi secara aktif **mencegah penggunaan aset yang salah** dan **mengaudit konsistensi merek** di seluruh titik sentuh digital. Pilar ini memastikan bahwa identitas visual yang telah dirumuskan di Pilar 7 dan strategi dari Pilar 1 terlindungi dalam setiap penggunaan.
+
+### 2. Arsitektur Modul
+
+Pilar 2 terdiri dari lima modul utama yang saling terintegrasi:
+
+| No. | Nama Modul | Fungsi Utama | Prioritas |
+| :-- | :--- | :--- | :--- |
+| 1 | **Intelligent DAM** | Penyimpanan terpusat dengan *auto-tagging* AI dan pencarian cerdas. | P0 (MVP) |
+| 2 | **Locked Asset Delivery** | Sistem pengunduhan aset terkunci sesuai aturan merek. | P0 (MVP) |
+| 3 | **Style Guide Injector** | Widget *copy-paste* yang mempertahankan format *font* dan gaya merek. | P1 |
+| 4 | **Automated Compliance Auditor** | *Scanner* otomatis untuk mendeteksi inkonsistensi visual di web/medsos. | P0 (MVP) |
+| 5 | **Living Brand Guidelines** | Panduan merek interaktif yang selalu *up-to-date* dengan aturan terbaru. | P1 |
+
+---
+
+## 📄 Spesifikasi Fitur per Modul
+
+### Modul 2.1: Intelligent DAM (Digital Asset Management)
+
+#### Tujuan
+Menyediakan perpustakaan pusat untuk semua aset merek (logo, gambar, font, video, templat) dengan kemampuan pencarian cerdas berbasis AI untuk mempercepat alur kerja tim.
+
+#### Alur Kerja (Workflow)
+
+1. **Upload Aset:**
+   - Admin mengunggah file ke DAM melalui *drag-and-drop* atau integrasi cloud (Google Drive, Dropbox).
+   - Sistem menerima berbagai format: gambar (PNG, JPG, SVG, WEBP), video (MP4, MOV), dokumen (PDF, AI, EPS), dan *font file* (TTF, OTF, WOFF).
+
+2. **AI Auto-Tagging (Proses Otomatis):**
+   - **Vision AI** (misal: Google Vision API) menganalisis konten gambar:
+     - Mendeteksi objek (misal: "kopi", "laptop", "orang").
+     - Mendeteksi warna dominan.
+     - Membaca teks dalam gambar (OCR).
+   - Sistem otomatis menambahkan *tag* ke metadata file.
+   - *Contoh:* File `hero-banner-final.jpg` akan otomatis di-*tag*: `banner`, `website`, `kopi`, `biru`, `orang minum`.
+
+3. **Pencarian Cerdas:**
+   - Pengguna mengetik kueri natural di kolom pencarian.
+   - Sistem mencari berdasarkan:
+     - Nama file.
+     - *Tag* otomatis AI.
+     - *Custom tag* yang ditambahkan pengguna.
+     - Metadata (tanggal *upload*, ukuran, format).
+
+4. **Manajemen Versi (Versioning):**
+   - Setiap kali file diperbarui, sistem menyimpan versi sebelumnya.
+   - Pengguna dapat melihat riwayat versi dan mengembalikan ke versi lama.
+
+5. **Koleksi & *Sharing*:**
+   - Pengguna dapat membuat **Koleksi** (folder virtual) untuk mengelompokkan aset lintas folder fisik.
+   - *Sharing* dapat dilakukan via tautan dengan izin terbatas (*view-only*, *can download locked version only*).
+
+#### Konsep UI/UX
+
+**Halaman Utama DAM:**
+
+```text
++-------------------------------------------------------------------+
+|  ASSET LIBRARY (DAM) - [Nama Workspace]            [Upload Asset]  |
++-------------------------------------------------------------------+
+|  [🔍 Cari aset... (contoh: "logo putih untuk latar gelap")]       |
+|                                                                   |
+|  Filter: [Semua Tipe ▼] [Semua Tag ▼] [Terbaru ▼]                 |
+|                                                                   |
+|  +----------------+ +----------------+ +----------------+          |
+|  | [Preview Logo] | | [Preview Foto] | | [Preview Video]|          |
+|  | logo-primary   | | hero-coffee    | | brand-film     |          |
+|  | .svg .png      | | .jpg .webp     | | .mp4           |          |
+|  |                | |                | |                |          |
+|  | Tag: logo, biru| | Tag: kopi,     | | Tag: video,    |          |
+|  |      vektor    | |      banner    | |      campaign  |          |
+|  +----------------+ +----------------+ +----------------+          |
+|                                                                   |
+|  +----------------+ +----------------+ +----------------+          |
+|  | ...            | | ...            | | ...            |          |
+|  +----------------+ +----------------+ +----------------+          |
+|                                                                   |
+|  [Buat Koleksi]  [Impor dari Drive]                               |
++-------------------------------------------------------------------+
+```
+
+**Tampilan Detail Aset (Saat Diklik):**
+
+```text
++---------------------------------------------------------------+
+|  [Preview Besar Gambar/Video]                         [X]     |
++---------------------------------------------------------------+
+|  Nama File: logo-primary.svg                                   |
+|  Dimensi: Vector                                               |
+|  Ukuran: 45 KB                                                 |
+|  Diupload: 12 April 2026                                       |
+|                                                               |
+|  Tag Otomatis (AI):                                           |
+|  [logo] [vektor] [biru] [minimalis] [geometris]               |
+|                                                               |
+|  Tag Manual: [ + Tambah Tag ]                                  |
+|                                                               |
+|  Versi: [ v2 (Terkini) ▼ ]                                    |
+|         - v2: 12 Apr 2026 (Perbaikan warna)                   |
+|         - v1: 10 Apr 2026 (Upload awal)                       |
+|                                                               |
+|  [ Download ] [ Bagikan Tautan ] [ Ganti File ] [ Hapus ]      |
+|                                                               |
+|  ⚠️ Catatan: Download file asli hanya untuk Admin/Editor.      |
+|              Tamu hanya bisa unduh versi terkunci.             |
++---------------------------------------------------------------+
+```
+
+**Fitur "Pencarian Cerdas" - Hasil Relevan:**
+
+```text
++---------------------------------------------------+
+| Hasil pencarian: "kopi di pagi hari"              |
++---------------------------------------------------+
+| AI memahami: "kopi" AND "pagi" (konteks visual)   |
+|                                                   |
+| +----------------+ +----------------+             |
+| | [Preview Foto] | | [Preview Foto] |             |
+| | morning-brew   | | coffee-beans   |             |
+| | Relevansi: 98% | | Relevansi: 87% |             |
+| +----------------+ +----------------+             |
+|                                                   |
+| Koleksi Terkait: "Kampanye Ramadhan 2026"         |
++---------------------------------------------------+
+```
+
+---
+
+### Modul 2.2: Locked Asset Delivery Engine
+
+#### Tujuan
+Mencegah klien atau tim eksternal menggunakan aset merek (logo, font) secara tidak sesuai panduan. Fitur ini menggantikan pengiriman file mentah via Google Drive/WhatsApp dengan sistem pengunduhan yang "terkunci" sesuai aturan merek yang telah ditetapkan di Pilar 7.
+
+#### Alur Kerja (Workflow) Detail
+
+1. **Setup Aturan (Admin) - Halaman "Brand Rules":**
+   - Admin memilih aset dari DAM (misal: logo utama).
+   - Admin mengaktifkan **"Locked Mode"** untuk aset tersebut.
+   - Admin mengatur parameter *lock*:
+     - **Clear Space:** *Padding* wajib di sekitar logo (dalam px atau %).
+     - **Allowed Colors:** Warna yang diizinkan untuk diunduh (misal: hanya *Primary* dan *White*).
+     - **Allowed Formats:** Format file yang diizinkan (misal: hanya PNG dan SVG, tidak bisa AI/EPS).
+     - **Minimum Size:** Ukuran minimum penggunaan (opsional).
+
+2. **Pengalaman Pengguna Tamu (Guest/Client):**
+   - Tamu login ke portal BrandOS dengan akses terbatas.
+   - Tamu membuka halaman "Brand Assets" untuk *workspace* klien.
+   - Tamu melihat daftar aset yang tersedia. **Tidak ada tombol "Download" biasa.**
+   - Tamu mengklik tombol **"Gunakan"** pada aset logo.
+   - Modal muncul dengan pilihan:
+     - Format (PNG transparan, SVG).
+     - Warna (sesuai *Allowed Colors*).
+     - Opsional: Ukuran spesifik (lebar dalam px).
+   - Sistem merender file di *backend* dengan aturan *clear space* yang telah ditetapkan.
+   - Sistem menghasilkan tautan unduhan sementara (berlaku 5 menit) dan mengirimkannya ke browser tamu.
+
+3. **Logging & Audit Trail:**
+   - Setiap permintaan unduhan tercatat: siapa, kapan, format apa, warna apa.
+   - Admin dapat melihat log ini untuk memantau penggunaan aset.
+
+#### Konsep UI/UX
+
+**Halaman Admin: "Brand Rules" untuk Aset Tertentu**
+
+```text
++---------------------------------------------------------------+
+|  ATURAN PENGGUNAAN ASET - "Logo Utama"                        |
++---------------------------------------------------------------+
+|                                                               |
+|  [✓] Aktifkan Locked Mode (Batasi pengunduhan tamu)           |
+|                                                               |
+|  ---------------------------------------------------------    |
+|  PARAMETER PENGUNCIAN                                         |
+|                                                               |
+|  Clear Space (Padding Wajib):                                 |
+|  [ Slider: 5% ----●---- 10% ---- 15% ---- 20% ]              |
+|  Nilai: 10% dari lebar logo                                   |
+|                                                               |
+|  Preview:                                                     |
+|  +-------------------------------------------------------+    |
+|  |                                                       |    |
+|  |   [Area padding ditandai dengan garis putus-putus]    |    |
+|  |                                                       |    |
+|  |        [Logo di tengah dengan padding 10%]            |    |
+|  |                                                       |    |
+|  |                                                       |    |
+|  +-------------------------------------------------------+    |
+|                                                               |
+|  Warna yang Diizinkan untuk Tamu:                             |
+|  [✓] Primary (#1A2B3C)    [✓] White (#FFFFFF)                |
+|  [ ] Black (#000000)      [ ] Reversed                       |
+|                                                               |
+|  Format yang Diizinkan:                                       |
+|  [✓] PNG (Transparan)     [✓] SVG                            |
+|  [ ] JPG                  [ ] PDF                            |
+|                                                               |
+|  Ukuran Minimum (Opsional):                                   |
+|  [ ] Batasi unduhan di bawah [ 100 ] px lebar                 |
+|                                                               |
+|  [ Simpan Aturan ]                                            |
++---------------------------------------------------------------+
+```
+
+**Tampilan Tamu: Halaman "Brand Assets"**
+
+```text
++---------------------------------------------------------------+
+|  BRAND ASSETS - [Nama Klien]                      (View Only)  |
++---------------------------------------------------------------+
+|                                                               |
+|  LOGO                                                         |
+|  +----------------------------------------------+             |
+|  |                                              |             |
+|  |        [Preview Logo Besar]                  |             |
+|  |                                              |             |
+|  |        [ Gunakan Logo ]                      |             |
+|  |                                              |             |
+|  +----------------------------------------------+             |
+|                                                               |
+|  WARNA MEREK                                                  |
+|  +----------------------------------------------+             |
+|  | Primary: #1A2B3C  | Secondary: #F5F5F5       |             |
+|  | Accent: #FF5733   |                         |             |
+|  +----------------------------------------------+             |
+|                                                               |
+|  TIPOGRAFI                                                    |
+|  +----------------------------------------------+             |
+|  | Heading: Poppins Bold  | Body: Inter Regular |             |
+|  | [ Salin Kode CSS ]                              |             |
+|  +----------------------------------------------+             |
+|                                                               |
+|  (Tidak ada tombol Download File Asli di halaman ini)          |
++---------------------------------------------------------------+
+```
+
+**Modal "Gunakan Logo" (Tampilan Tamu):**
+
+```text
++---------------------------------------------------+
+|  GUNAKAN LOGO - [Nama Brand]              [X]     |
++---------------------------------------------------+
+|                                                   |
+|  Pilih Format:                                    |
+|  (●) PNG (Transparan) - Direkomendasikan          |
+|  ( ) SVG - Untuk desainer/web                    |
+|                                                   |
+|  Pilih Warna:                                     |
+|  (●) Primary (#1A2B3C)                           |
+|  ( ) White (#FFFFFF)                             |
+|                                                   |
+|  Opsi Lanjutan:                                   |
+|  [ ] Ukuran Khusus: [____] px (Lebar)             |
+|      (Minimal 100px)                              |
+|                                                   |
+|  +-------------------------------------------+    |
+|  | Preview:                                  |    |
+|  |        [Logo Kecil dengan padding]        |    |
+|  |        (File akan memiliki area kosong    |    |
+|  |         di sekitar logo sesuai aturan)    |    |
+|  +-------------------------------------------+    |
+|                                                   |
+|  [ Download Logo ]  (Tautan berlaku 5 menit)      |
++---------------------------------------------------+
+```
+
+---
+
+### Modul 2.3: Style Guide Injector (Copy-Paste Text Widget)
+
+#### Tujuan
+Memastikan bahwa teks yang disalin dari portal BrandOS ke aplikasi eksternal (Google Docs, Notion, PowerPoint) tetap mempertahankan format *font* dan gaya merek, bahkan jika *font* tersebut tidak terpasang di komputer penerima.
+
+#### Alur Kerja (Workflow)
+
+1. **Setup (Admin):**
+   - Admin mengunggah file *font* merek (TTF, OTF, WOFF) ke DAM.
+   - Admin menentukan *font* untuk *Heading* dan *Body* di **Living Brand Guidelines** (Modul 2.5).
+   - Sistem menghasilkan **kode *embed* unik** untuk *Style Guide Injector*.
+
+2. **Penggunaan oleh Tamu:**
+   - Tamu membuka halaman "Style Guide".
+   - Tamu melihat contoh teks dengan format yang benar.
+   - Tamu mengklik tombol **"Salin Teks dengan Style"** pada *widget*.
+   - Sistem menyalin HTML yang telah di-*style* ke *clipboard*.
+   - Saat ditempel (Ctrl+V) ke Google Docs atau aplikasi lain yang mendukung *rich text*, teks akan muncul dengan *font* merek (menggunakan *web font* dari server BrandOS).
+
+3. **Alternatif: Widget Embed:**
+   - Admin dapat menempelkan kode *embed* ke Notion atau website internal perusahaan.
+   - Widget menampilkan *text box* kecil di mana pengguna dapat mengetik langsung, dan teks otomatis terformat dengan gaya merek.
+
+#### Konsep UI/UX
+
+**Halaman Tamu: "Style Guide"**
+
+```text
++---------------------------------------------------------------+
+|  STYLE GUIDE - [Nama Brand]                                   |
++---------------------------------------------------------------+
+|                                                               |
+|  TIPOGRAFI                                                    |
+|                                                               |
+|  Heading 1 (Poppins Bold, 32px)                               |
+|  +-------------------------------------------------------+    |
+|  | [Preview Teks H1: "Momen Hening yang Menggerakkan"]   |    |
+|  | [ Salin Teks dengan Style ]                           |    |
+|  +-------------------------------------------------------+    |
+|                                                               |
+|  Heading 2 (Poppins SemiBold, 24px)                           |
+|  +-------------------------------------------------------+    |
+|  | [Preview Teks H2: "Temukan Fokus Anda"]              |    |
+|  | [ Salin Teks dengan Style ]                           |    |
+|  +-------------------------------------------------------+    |
+|                                                               |
+|  Body Text (Inter Regular, 16px)                              |
+|  +-------------------------------------------------------+    |
+|  | [Preview Teks Body: "Kami percaya bahwa pagi hari..."]|    |
+|  | [ Salin Teks dengan Style ]                           |    |
+|  +-------------------------------------------------------+    |
+|                                                               |
+|  Widget Embed:                                                |
+|  [Kode: <iframe src="..."></iframe>] [ Salin Kode ]           |
+|  (Tempelkan ke Notion/Website untuk *text box* interaktif)    |
++---------------------------------------------------------------+
+```
+
+**Tampilan Widget Embed di Notion (Eksternal):**
+
+```text
++---------------------------------------------------+
+|  BRAND TEXT TOOL - Hening Coffee                  |
++---------------------------------------------------+
+|                                                   |
+|  Ketik atau tempel teks di sini:                  |
+|  [_____________________________________________]  |
+|                                                   |
+|  Teks akan otomatis menggunakan font Poppins/Inter |
+|  meskipun font tidak terinstal di komputer Anda.   |
+|                                                   |
+|  [ Salin Teks yang Sudah Di-Format ]              |
+|                                                   |
+|  Powered by BrandOS                               |
++---------------------------------------------------+
+```
+
+---
+
+### Modul 2.4: Automated Compliance Auditor (Brand Health Scanner)
+
+#### Tujuan
+Memberikan laporan otomatis tentang inkonsistensi visual dan verbal sebuah merek di website atau media sosial. Fitur ini digunakan agensi untuk *upselling* jasa *rebranding* atau *retainer*, serta oleh *brand manager* internal untuk menjaga kualitas.
+
+#### Alur Kerja (Workflow) Teknis
+
+1. **Input:**
+   - Pengguna memasukkan satu atau beberapa URL (Website, Instagram, LinkedIn) ke dalam *scanner*.
+   - Pengguna memilih *Brand Guideline* referensi (yang telah disimpan di **Living Brand Guidelines** Modul 2.5).
+
+2. **Proses Backend (Asynchronous Job):**
+   - Sistem melakukan *web scraping* pada URL yang diberikan:
+     - **Website:** Mengambil HTML, CSS, dan *screenshot* halaman.
+     - **Instagram/LinkedIn:** Menggunakan API resmi (jika tersedia) atau *scraping* publik untuk mengambil gambar postingan dan teks *caption*.
+   - **Analisis Warna (Vision AI):**
+     - Ekstrak semua *hex code* dari CSS (`color`, `background-color`) dan gambar (menggunakan *color clustering*).
+     - Bandingkan dengan palet referensi di *guideline*.
+     - Tandai warna yang memiliki *delta E* (perbedaan visual) di atas ambang batas toleransi.
+   - **Analisis Tipografi:**
+     - Deteksi *font-family* aktual yang dirender (dengan *headless browser*).
+     - Bandingkan dengan *font guideline*.
+   - **Analisis Logo:**
+     - Deteksi keberadaan logo di gambar menggunakan *object detection model* (dilatih khusus logo klien).
+     - Ukur *clear space* di sekitar logo pada *screenshot* (opsional, lebih kompleks).
+   - **Analisis Tone of Voice (NLP):**
+     - Analisis sentimen dan gaya bahasa teks *caption* atau *headline*.
+     - Berikan skor pada spektrum yang telah ditentukan (misal: "Formal" vs "Kasual", "Serius" vs "Ceria").
+
+3. **Output:**
+   - Dashboard **Brand Health Score** (0-100).
+   - Daftar temuan pelanggaran, dikategorikan berdasarkan tingkat keparahan (Kritis, Peringatan, Baik).
+   - Visualisasi perbandingan (misal: palet warna yang ditemukan vs palet referensi).
+   - Tombol **"Export as White-Label PDF"** (untuk agensi, dengan logo agensi).
+
+4. **Penjadwalan Audit:**
+   - Pengguna dapat menjadwalkan audit otomatis (misal: setiap minggu atau setiap bulan).
+   - Sistem akan mengirimkan laporan melalui email.
+
+#### Konsep UI/UX
+
+**Halaman Auditor: Input & Hasil** (Deskripsi detail sudah ada di dokumen sebelumnya, berikut penekanan pada fitur tambahan)
+
+**Fitur Tambahan UI: "Perbandingan Visual"**
+
+```text
++---------------------------------------------------------------+
+|  TEMUAN WARNA - Perbandingan Visual                           |
++---------------------------------------------------------------+
+|                                                               |
+|  Warna Referensi:                       Warna Ditemukan:      |
+|  +------------------+                   +------------------+  |
+|  | [Kotak #1A2B3C]  |  vs               | [Kotak #1B2C3D]  |  |
+|  | Primary Blue     |                   | Footer Text      |  |
+|  +------------------+                   +------------------+  |
+|                                                               |
+|  Lokasi: Footer Website (lihat *screenshot*)                   |
+|  +-------------------------------------------------------+    |
+|  | [Screenshot footer dengan highlight area teks]        |    |
+|  +-------------------------------------------------------+    |
+|                                                               |
+|  Rekomendasi: Ganti warna teks footer menjadi #1A2B3C.        |
+|  [ Tandai Sudah Diperbaiki ] (Untuk tracking internal)        |
++---------------------------------------------------------------+
+```
+
+**Fitur "Brand Health Score" History:**
+
+```text
++---------------------------------------------------+
+|  BRAND HEALTH SCORE - Riwayat                     |
++---------------------------------------------------+
+|                                                   |
+|  Skor Saat Ini: 78/100 (🟡 Perlu Perhatian)       |
+|                                                   |
+|  [Grafik Garis: Skor 3 bulan terakhir]            |
+|   100 |                                           |
+|    90 |      *---*                                |
+|    80 |    *       *                              |
+|    70 |  *           *                            |
+|    60 | *                                        |
+|       +------------------------------------------|
+|         Jan    Feb    Mar    Apr                 |
+|                                                   |
+|  Tren: Meningkat +5 poin dari bulan lalu.         |
+|  Area Perbaikan Terbanyak: Konsistensi Warna.     |
++---------------------------------------------------+
+```
+
+---
+
+### Modul 2.5: Living Brand Guidelines
+
+#### Tujuan
+Menyediakan panduan merek interaktif yang selalu *up-to-date* dengan aturan terbaru, menggantikan dokumen PDF statis. Setiap perubahan di **Pilar 7 (Visual Intelligence)** atau **Pilar 2 (Brand Rules)** secara otomatis tercermin di sini.
+
+#### Alur Kerja (Workflow)
+
+1. **Generasi Otomatis:**
+   - Sistem mengompilasi data dari:
+     - **Pilar 7:** Palet warna, tipografi, aturan logo (hasil dari kanvas Kapferer dan generator visual).
+     - **Pilar 1:** *Brand Essence*, *Brand Mantra*, *Positioning Statement*.
+     - **Modul 2.2:** Aturan *clear space* dan variasi logo.
+   - Sistem menghasilkan halaman web interaktif yang terstruktur.
+
+2. **Interaksi Pengguna:**
+   - Tim internal atau tamu dapat menjelajahi *guideline* seperti situs web.
+   - Setiap elemen (warna, font) memiliki tombol **"Salin"** (hex code, kode CSS) atau **"Unduh"** (aset terkunci).
+   - Tamu tidak dapat mengubah konten.
+
+3. **Pembaruan Real-Time:**
+   - Saat admin mengubah palet warna di Pilar 7, *guideline* langsung memperbarui tampilan warnanya.
+   - Tidak perlu mengunggah PDF baru atau memberi tahu tim secara manual.
+
+#### Konsep UI/UX
+
+**Tampilan Living Brand Guidelines (Versi Web Interaktif):**
+
+```text
++---------------------------------------------------------------+
+|  BRAND GUIDELINES - Hening Coffee                             |
+|  [ Overview ] [ Logo ] [ Warna ] [ Tipografi ] [ Fotografi ]   |
++---------------------------------------------------------------+
+|                                                               |
+|  BRAND ESSENCE                                                |
+|  "Kesadaran Hening"                                           |
+|                                                               |
+|  ---------------------------------------------------------    |
+|                                                               |
+|  LOGO                                                         |
+|  +----------------------------------------------+             |
+|  | [Preview Logo Primary] [Preview Logo White]  |             |
+|  +----------------------------------------------+             |
+|                                                               |
+|  Aturan Clear Space: 10% dari lebar logo.                     |
+|  Jangan: [Ikon larangan] Meregangkan, mengubah warna, dll.    |
+|                                                               |
+|  [ Unduh Logo Primary (PNG) ] [ Unduh Logo White (SVG) ]       |
+|  (Tombol ini otomatis memberikan file dengan padding benar)    |
+|                                                               |
+|  ---------------------------------------------------------    |
+|                                                               |
+|  WARNA MEREK                                                  |
+|  +----------------+ +----------------+ +----------------+     |
+|  | Primary        | | Secondary      | | Accent         |     |
+|  | #1A2B3C        | | #F5F5F5        | | #FF5733        |     |
+|  | [Salin Hex]    | | [Salin Hex]    | | [Salin Hex]    |     |
+|  +----------------+ +----------------+ +----------------+     |
+|                                                               |
+|  ---------------------------------------------------------    |
+|                                                               |
+|  TIPOGRAFI                                                    |
+|  Heading: Poppins Bold (32px)                                 |
+|  [Salin Kode CSS: font-family: 'Poppins', sans-serif...]      |
+|                                                               |
+|  Body: Inter Regular (16px)                                   |
+|  [Salin Kode CSS]                                             |
+|                                                               |
+|  ---------------------------------------------------------    |
+|                                                               |
+|  BRAND VOICE                                                  |
+|  "Inspiratif, tenang, dan penuh kesadaran."                   |
+|  Contoh: "Temukan momen heningmu." vs "Beli kopi kami."       |
+|                                                               |
+|  [ Ekspor sebagai PDF ] (Untuk keperluan cetak/klien)         |
++---------------------------------------------------------------+
+```
+
+---
+
+### 6. Integrasi Antar Modul dalam Pilar 2
+
+```mermaid
+graph TD
+    A[DAM] -->|Aset disimpan| B[Locked Asset Delivery]
+    A -->|Font disimpan| C[Style Guide Injector]
+    D[Living Brand Guidelines] -->|Mengambil aturan dari| B
+    D -->|Menampilkan palet dari| E[Pilar 7]
+    F[Compliance Auditor] -->|Membandingkan dengan aturan di| D
+    F -->|Menyimpan laporan di| G[Laporan White-Label]
+    B -->|Mencatat log| H[Audit Trail]
+```
+
+---
+
+### 7. Integrasi dengan Pilar Lain
+
+| Dari Pilar 2 | Ke Pilar Lain | Fungsi |
+| :--- | :--- | :--- |
+| **Aturan Warna & Font** | **Pilar 3 (Template Editor)** | Mengunci palet dan tipografi di editor desain. |
+| **Laporan Auditor** | **Pilar 5 (Agency Hub)** | Digunakan sebagai *lead magnet* atau laporan *retainer* klien. |
+| **Brand Essence dari Living Guidelines** | **Pilar 4 (Brand Amplifier)** | Memandu AI *copywriting* untuk konsistensi *tone of voice*. |
+
+---
+
+Dokumen ini melengkapi spesifikasi **Pilar 2** dengan detail alur kerja dan konsep UI/UX untuk setiap modul. Tim pengembang dapat menggunakannya sebagai acuan untuk membangun sistem manajemen aset dan penegakan konsistensi merek.

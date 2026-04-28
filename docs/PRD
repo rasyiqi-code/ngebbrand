@@ -1,0 +1,181 @@
+Berikut adalah **Product Requirement Document (PRD)** lengkap untuk platform **BrandOS** (Brand Operating System). Dokumen ini merangkum seluruh diskusi kita menjadi cetak biru teknis dan fungsional yang siap dieksekusi.
+
+---
+
+## 📄 Product Requirement Document (PRD)
+
+| **Nama Produk** | BrandOS |
+| :--- | :--- |
+| **Versi Dokumen** | 1.0 |
+| **Status** | Draft for Development |
+| **Target Peluncuran MVP** | Q4 2026 (Pilar 2 & Pilar 7 Dasar) |
+| **Product Manager** | [Nama Anda] |
+
+---
+
+### 1. Ringkasan Eksekutif (Executive Summary)
+
+**BrandOS** adalah platform SaaS *All-in-One Brand Operating System* yang dirancang untuk menyatukan proses strategi, manajemen aset, pembuatan konten, dan analisis performa merek dalam satu ekosistem terintegrasi. Berbeda dengan alat desain generik seperti Canva atau alat manajemen aset seperti Frontify, **BrandOS** dibangun di atas fondasi teori branding dari para pakar (Aaker, Kapferer, Sinek, Keller) dan menggunakan **AI Co-Strategist** untuk memastikan setiap eksekusi visual dan verbal selaras dengan DNA strategis merek.
+
+**Visi:** Menjadi *Single Source of Truth* untuk seluruh siklus hidup sebuah merek, dari *naming* hingga *resonance*.
+
+---
+
+### 2. Target Pengguna (User Personas)
+
+| Persona | Pain Points Utama | Tujuan Menggunakan BrandOS |
+| :--- | :--- | :--- |
+| **Brand Strategist / Agency Owner** | • *Brief* klien tidak terstruktur.<br>• Sulit membuktikan ROI strategi branding.<br>• Aset brand klien berantakan dan tidak konsisten. | • Mengisi kanvas strategi dengan panduan AI.<br>• Menghasilkan laporan *Brand Health Score* untuk *upselling*. |
+| **In-House Brand Manager** | • Tim internal tidak patuh pada *Brand Guidelines*.<br>• Proses *approval* konten lambat via email/WA.<br>• Bingung membuat konten *on-brand* dengan cepat. | • Mengunci aset agar tidak bisa diubah sembarangan.<br>• Membuat konten sosial media dalam 5 menit. |
+| **UKM Founder** | • Tidak punya budget untuk agency branding mahal.<br>• Bingung memilih nama, logo, dan warna yang tepat. | • Mendapatkan *starter kit* branding otomatis dengan harga terjangkau. |
+
+---
+
+### 3. Arsitektur Produk (Modular Platform)
+
+Platform dibagi menjadi **7 Pilar**. MVP akan fokus pada **Pilar 2** dan **Pilar 7**.
+
+| Pilar | Nama Modul | Fungsi Utama | Prioritas Pengembangan |
+| :--- | :--- | :--- | :--- |
+| **P1** | **Brand Genesis Lab** | Strategi, *Naming*, AI *Positioning*. | P2 (Fase 2) |
+| **P2** | **Brand Fortress** | **MVP Utama**: *Locked Asset Delivery*, *DAM*, Auditor Otomatis. | **P0 (MVP)** |
+| **P3** | **Brand Expression Studio** | *Template Lockdown Editor*, AI *Copywriting*. | P1 (Fase 3) |
+| **P4** | **Brand Amplifier** | Kalender Konten, *Publishing*, Analitik. | P2 (Fase 4) |
+| **P5** | **Brand Agency Hub** | Manajemen Multi-Klien, *White-Label Reporting*. | P1 (Fase 3) |
+| **P6** | **Brand AI Cortex** | Lapisan Kecerdasan yang menghubungkan semua Pilar. | **P0 (Integrasi Inti)** |
+| **P7** | **Brand Visual Intelligence** | Kanvas Aaker, Kapferer, Generator *Moodboard*. | **P0 (MVP)** |
+
+---
+
+### 4. Persyaratan Fungsional Rinci (Functional Requirements)
+
+#### 🧠 Pilar 6: Brand AI Cortex (Fondasi MVP)
+*Deskripsi:* Mesin LLM yang telah di-*fine-tune* dengan korpus buku dan jurnal para pakar branding (Aaker, Kapferer, Keller, Wheeler, Neumeier).
+
+- **FR-6.1: AI Co-Strategist Sidebar**
+    - **Deskripsi:** Komponen UI *floating* yang dapat diakses di semua halaman platform.
+    - **Kemampuan:**
+        - Menerima *prompt* spesifik pakar (Misal: "Apa pendapat David Aaker tentang diferensiasi saya?").
+        - Memberikan saran pengisian kanvas berdasarkan analisis data teks yang ada.
+        - Menganalisis *tone of voice* dan memberikan skor konsistensi.
+
+#### 🏛️ Pilar 7: Brand Visual Intelligence Hub (MVP)
+*Deskripsi:* Modul untuk menerjemahkan strategi (P1) menjadi *brief* visual yang solid.
+
+- **FR-7.1: Aaker Perspective Canvas**
+    - **Input:** Form isian terstruktur untuk 4 dimensi (Product, Organization, Person, Symbol).
+    - **Output AI:** Ringkasan "Visual DNA" (Kata kunci visual: misal "Bold", "Geometric", "Warm").
+
+- **FR-7.2: Kapferer Identity Prism Visualizer**
+    - **UI/UX:** Tampilan prisma heksagonal interaktif.
+    - **Fungsi:** Setiap sisi prisma (Physique, Personality, dll) memiliki *prompt* visual. Saat diisi, AI otomatis memperbarui **Visual Moodboard Generator**.
+
+- **FR-7.3: AI Moodboard Generator**
+    - **Mekanisme:** Berdasarkan *output* FR-7.1 dan FR-7.2, AI menghasilkan 3 opsi *moodboard* (kombinasi gambar stok bebas royalti, palet warna, pasangan font) yang sesuai dengan teori *Brand Identity*.
+
+#### 🔒 Pilar 2: Brand Fortress (MVP Utama)
+*Deskripsi:* Sistem manajemen aset yang fokus pada **pencegahan kesalahan**, bukan sekadar penyimpanan.
+
+- **FR-2.1: Locked Asset Delivery Engine**
+    - **Fungsi:** File logo vektor **tidak dapat diunduh** oleh tamu (klien).
+    - **Alur:**
+        1.  Klien klik "Share Logo".
+        2.  Sistem memunculkan modal: "Pilih Format (PNG/SVG) dan Warna (Primary/White)".
+        3.  Sistem merender file dengan **padding/clear space otomatis** sesuai *setting* admin.
+        4.  Sistem mengirim tautan unduhan sementara.
+
+- **FR-2.2: Style Guide Injector (Copy-Paste Text)**
+    - **Deskripsi:** Widget *embed* yang bisa dipasang di Notion/Google Docs klien.
+    - **Fungsi:** Klien mengetik teks di widget -> Teks otomatis berubah menjadi font merek (via *web font* CSS) **meskipun font tidak ter-install di komputer klien**.
+
+- **FR-2.3: Brand Consistency Auditor (Scanner)**
+    - **Input:** URL Website / Handle Instagram.
+    - **Proses:** *Web scraping* untuk menganalisis CSS (warna *hex*, *font-family*) dan OCR gambar.
+    - **Output Laporan:**
+        - Daftar variasi warna *hex* yang tidak sesuai.
+        - Analisis sentimen *caption* (Skor "Kaku" vs "Ceria").
+        - **Siap Ekspor PDF *White-Label* (P5).**
+
+---
+
+### 5. Alur Pengguna Utama (User Flow)
+
+**Skenario: Klien *Agency* Pertama Kali Menggunakan BrandOS**
+
+1.  **Onboarding:** Pilih *role* "Agency".
+2.  **Buat *Workspace*:** Buat *workspace* untuk "Klien A".
+3.  **Pilar 7 - Isi Kanvas:**
+    - Buka **Brand Identity Prism**.
+    - AI Co-Strategist bertanya: *"Siapa persona merek ini? Saya akan bantu isi sisi Personality."*
+    - Isi "Physique" (Logo). Upload logo klien.
+4.  **Pilar 2 - Atur *Rules*:**
+    - Set *Clear Space* logo = 20px.
+    - Kunci *Hex Code*: `#1A2B3C`.
+    - Aktifkan *Font Lock*: Poppins.
+5.  **Kirim ke Klien:**
+    - Undang klien sebagai *Guest Viewer*.
+    - Klien login, lihat *dashboard* sederhana.
+    - Klien klik "Gunakan Logo" -> Pilih "Untuk Medsos" -> Download file PNG yang sudah benar *padding*-nya.
+    - Klien gagal mengunduh file `.ai` mentah.
+
+---
+
+### 6. Spesifikasi Teknis (Non-Fungsional & Arsitektur)
+
+| Kategori | Spesifikasi |
+| :--- | :--- |
+| **Tech Stack (Usulan)** | **Frontend:** React / Next.js (Tailwind UI). **Backend:** Node.js / Python (FastAPI untuk AI). **Database:** PostgreSQL. **Storage:** AWS S3 / Cloudflare R2. |
+| **AI Integration** | **LLM:** OpenAI GPT-4o atau Claude 3.5 Sonnet (dengan *System Prompt* khusus pakar). **Vision AI:** AWS Rekognition / Google Vision API (untuk analisis warna di gambar medsos). |
+| **Security** | **Asset Encryption:** File di S3 terenkripsi, akses via *Signed URL* kedaluwarsa. **Role-Based Access:** Admin, Editor, Guest (hanya lihat *locked assets*). |
+| **Performance** | Waktu render *Locked Asset Delivery* < 3 detik. |
+
+---
+
+### 7. Peta Jalan & Prioritas Pengembangan
+
+#### **Fase 0: MVP (Minimal Viable Product) - 4 Bulan**
+**Tujuan:** Membuktikan bahwa *Brand Fortress* menyelesaikan masalah nyata agensi.
+
+- [ ] Halaman *Login* & Manajemen *Workspace* (1 Klien).
+- [ ] **Pilar 7 Dasar:** UI Kanvas Kapferer Prism (Manual Input).
+- [ ] **Pilar 2 Inti:** *Upload* Logo, *Setup Clear Space*, *Locked Asset Delivery*.
+- [ ] **Pilar 2 Auditor:** *Scanner* Situs Web Sederhana (Deteksi Warna).
+
+#### **Fase 1: Agency Loop - 3 Bulan**
+**Tujuan:** Monetisasi untuk Agensi.
+
+- [ ] **Pilar 5:** Manajemen Multi-Klien (Hingga 20 *workspace*).
+- [ ] **Pilar 5:** Fitur *White-Label* PDF Report.
+- [ ] **Pilar 3 Dasar:** *Template* Instagram *Locked* sederhana.
+
+#### **Fase 2: AI Genesis - 3 Bulan**
+**Tujuan:** *Full Automation*.
+
+- [ ] **Pilar 1:** *Naming Agent* & *Domain Checker*.
+- [ ] **Pilar 7:** AI *Moodboard Generator*.
+- [ ] **Pilar 6:** Integrasi *Chat* AI Co-Strategist.
+
+---
+
+### 8. Metrik Keberhasilan (Success Metrics)
+
+| Metrik | Target MVP (6 Bulan Pasca Rilis) |
+| :--- | :--- |
+| **User Retention (Month 1)** | > 40% pengguna yang *upload* logo kembali di minggu ke-2. |
+| **Locked Asset Downloads** | Minimal 50 unduhan *Locked Asset* per *workspace* per bulan. |
+| **Net Promoter Score (NPS)** | > 50 dari kalangan pemilik agensi. |
+| **Akuisisi** | 50 Agensi Aktif Membayar. |
+
+---
+
+### 9. Risiko dan Asumsi
+
+| Risiko | Mitigasi |
+| :--- | :--- |
+| **Asumsi:** Klien agensi mau menggunakan *tool* baru. | **Mitigasi:** Fokus pada fitur "*Locked Asset*" yang tidak ada di Google Drive/Canva (Ini adalah *pain point* unik). |
+| **Risiko:** Biaya komputasi AI untuk *scanning* gambar tinggi. | **Mitigasi:** Batasi frekuensi *scan* untuk *free tier*, gunakan *queue system* untuk *bulk scan*. |
+| **Risiko:** Pengguna bingung dengan istilah "Kapferer Prism". | **Mitigasi:** Ganti nama UI menjadi "**Personality Blueprint**" dengan *tooltip* edukatif. |
+
+---
+
+Dokumen PRD ini siap digunakan sebagai panduan untuk memulai *sprint* desain UI/UX dan pengembangan *backend*. Apakah ada bagian spesifik yang ingin didetailkan lebih lanjut, misalnya *database schema* atau desain UI *mockup*?

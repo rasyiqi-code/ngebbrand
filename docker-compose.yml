@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: brandos-db
+    restart: always
+    environment:
+      POSTGRES_USER: brandos_user
+      POSTGRES_PASSWORD: brandos_password
+      POSTGRES_DB: brandos_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

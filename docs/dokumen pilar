@@ -1,0 +1,451 @@
+Berikut adalah dokumen spesifikasi rinci untuk **enam fitur inti** platform BrandOS. Setiap dokumen mencakup **tujuan**, **alur kerja (workflow)**, dan **konsep UI/UX** yang siap digunakan oleh tim desain dan pengembangan.
+
+---
+
+## 📁 Dokumen 1: Locked Asset Delivery Engine (Pilar 2)
+
+### 1. Tujuan Fitur
+Mencegah klien atau tim internal menggunakan aset brand (logo, font) secara tidak sesuai panduan. Fitur ini menggantikan pengiriman file mentah via Google Drive/WhatsApp dengan sistem pengunduhan yang "terkunci" sesuai aturan brand.
+
+### 2. Alur Kerja (Workflow)
+
+```mermaid
+graph TD
+    A[Admin Upload Logo Vektor] --> B[Setup Clear Space & Color Variants]
+    B --> C[Simpan di DAM]
+    C --> D{Guest/Client Login}
+    D --> E[Buka Halaman Brand Assets]
+    E --> F[Klik Tombol Gunakan Logo]
+    F --> G[Modal: Pilih Format & Warna]
+    G --> H[Sistem Render File dengan Padding Otomatis]
+    H --> I[Download File PNG/SVG Terkunci]
+```
+
+**Rincian Langkah:**
+
+1.  **Setup (Admin):**
+    -   Admin mengunggah file logo (`.ai`, `.svg`, `.eps`).
+    -   Admin mengatur **Clear Space** (dalam px atau %).
+    -   Admin menentukan **Variasi Warna** (Primary, White, Black).
+    -   Admin mengaktifkan **Restrictions** (Nonaktifkan unduhan file sumber).
+
+2.  **Penggunaan (Client/Guest):**
+    -   Client login dengan akses terbatas (Guest).
+    -   Client melihat tampilan logo di halaman "Brand Assets".
+    -   Client **tidak melihat** tombol "Download File Asli".
+    -   Client hanya melihat tombol **"Gunakan Logo"**.
+
+3.  **Proses Render (Backend):**
+    -   Sistem membaca file vektor asli.
+    -   Sistem menambahkan *padding* transparan sesuai aturan *clear space*.
+    -   Sistem mengonversi ke format PNG (atau SVG) dengan warna yang dipilih.
+    -   Sistem menghasilkan URL unduhan sementara (berlaku 5 menit).
+
+### 3. Konsep UI/UX
+
+**Halaman Admin: Brand Assets > Logo Settings**
+
+```text
++---------------------------------------------------+
+|  LOGO SETUP                                       |
++---------------------------------------------------+
+|  [ Upload Logo File ]  (logo.ai - 2.4 MB)         |
+|                                                   |
+|  Clear Space Setting:                             |
+|  [ Slider: 10% ----●---- 20% ---- 30% ]          |
+|  Preview: [Icon Logo dengan area padding biru]    |
+|                                                   |
+|  Allowed Colors for Client:                       |
+|  [✓] Primary (#1A2B3C) [✓] White [ ] Black       |
+|                                                   |
+|  [ ] Allow downloading original vector file       |
+|      (Uncheck for Locked Mode)                    |
+|                                                   |
+|  [ Save Settings ]                                |
++---------------------------------------------------+
+```
+
+**Halaman Client: Brand Assets**
+
+```text
++---------------------------------------------------+
+|  LOGO & ASSETS               (View Only Mode)     |
++---------------------------------------------------+
+|                                                   |
+|    [ Preview Logo Besar di Tengah ]               |
+|                                                   |
+|    [ Gunakan Logo ]  (Tombol Utama)               |
+|                                                   |
+|    (Tidak ada tombol Download / titik tiga)       |
++---------------------------------------------------+
+
+**Modal Setelah Klik "Gunakan Logo":**
+
++---------------------------------------------------+
+|  Download Logo - [Nama Brand]          [X]        |
++---------------------------------------------------+
+|                                                   |
+|  Pilih Format:                                    |
+|  (●) PNG (Transparan)  ( ) SVG                    |
+|                                                   |
+|  Pilih Warna:                                     |
+|  (●) Brand Primary  ( ) White                     |
+|                                                   |
+|  [Preview Thumbnail kecil di kanan]               |
+|                                                   |
+|  [ Download Logo ]   (Tombol Hijau)               |
++---------------------------------------------------+
+```
+
+---
+
+## 📁 Dokumen 2: Brand Consistency Auditor (Pilar 2)
+
+### 1. Tujuan Fitur
+Memberikan laporan otomatis tentang inkonsistensi visual dan verbal sebuah brand di website atau media sosial. Fitur ini digunakan agensi untuk *upselling* jasa *rebranding* atau *retainer*.
+
+### 2. Alur Kerja (Workflow)
+
+1.  **Input:**
+    -   User memasukkan URL Website atau Handle Instagram.
+    -   User memilih *Brand Guideline* referensi (dari database BrandOS).
+
+2.  **Proses Backend (Async Job):**
+    -   **Web Scraping:** Mengambil HTML/CSS halaman dan gambar postingan.
+    -   **Analisis Warna:** Ekstrak semua *hex code* dari CSS dan gambar, bandingkan dengan palet referensi.
+    -   **Analisis Font:** Deteksi *font-family* yang dirender di browser, bandingkan dengan *font guideline*.
+    -   **Analisis Tone (Opsional):** Analisis sentimen teks *caption* atau *headline* (Skala: Kaku - Ceria).
+
+3.  **Output:**
+    -   Dashboard skor kesehatan brand (*Brand Health Score*).
+    -   Daftar temuan pelanggaran.
+    -   Tombol **"Export as White-Label PDF"**.
+
+### 3. Konsep UI/UX
+
+**Halaman Auditor: Input**
+
+```text
++---------------------------------------------------+
+|  BRAND HEALTH SCANNER                             |
++---------------------------------------------------+
+|  [ Input URL Website / Instagram ]                 |
+|                                                   |
+|  Pilih Brand Guideline:                           |
+|  [ Dropdown: Pilih Workspace Klien ▼ ]            |
+|                                                   |
+|  [ Mulai Scan ]  (Estimasi waktu: 30 detik)       |
++---------------------------------------------------+
+```
+
+**Halaman Hasil Audit:**
+
+```text
++---------------------------------------------------+
+|  LAPORAN BRAND HEALTH: [Nama Klien]               |
+|  Score: 67/100 (⚠️ Butuh Perbaikan)                |
++---------------------------------------------------+
+|                                                   |
+|  🔴 KRITIKAL (2 Temuan)                           |
+|  +-----------------------------------------------+ |
+|  | ❌ Warna Logo: 14 Variasi Hex Ditemukan       | |
+|  |    #1A2B3C (Asli) vs #1B2C3D (di Footer)      | |
+|  |    [ Lihat Screenshot ]                       | |
+|  +-----------------------------------------------+ |
+|  | ❌ Font Heading: Menggunakan Arial             | |
+|  |    (Seharusnya Poppins Bold)                  | |
+|  +-----------------------------------------------+ |
+|                                                   |
+|  🟡 PERINGATAN (3 Temuan)                         |
+|  +-----------------------------------------------+ |
+|  | ⚠️ Clear Space Logo: Terlalu sempit di Header  | |
+|  +-----------------------------------------------+ |
+|                                                   |
+|  🟢 BAIK                                          |
+|  +-----------------------------------------------+ |
+|  | ✅ Tone of Voice: Konsisten (80% "Ceria")      | |
+|  +-----------------------------------------------+ |
+|                                                   |
+|  [ Export Laporan PDF ] [ Jadwalkan Audit Ulang ] |
++---------------------------------------------------+
+```
+
+---
+
+## 📁 Dokumen 3: Kapferer Identity Prism Visualizer (Pilar 7)
+
+### 1. Tujuan Fitur
+Menerjemahkan konsep **Brand Identity Prism** dari Jean-Noël Kapferer menjadi antarmuka visual yang interaktif. Membantu *brand strategist* mendefinisikan 6 sisi identitas merek secara intuitif.
+
+### 2. Alur Kerja (Workflow)
+
+1.  User membuka modul "Brand Visual Intelligence".
+2.  Sistem menampilkan Prisma Heksagonal kosong.
+3.  User mengklik salah satu sisi (misal: **Physique**).
+4.  Sistem menampilkan panel samping berisi *form* dan *prompt* AI.
+5.  User mengisi teks atau memilih dari saran AI.
+6.  Setiap perubahan teks otomatis mengisi *field* di sisi lainnya (AI membantu koneksi).
+7.  Prisma secara visual "terisi" (warna sisi berubah dari abu-abu menjadi solid).
+
+### 3. Konsep UI/UX
+
+**Tampilan Utama Prisma:**
+
+```text
++---------------------------------------------------------------+
+|  BRAND IDENTITY PRISM - [Nama Brand]                          |
++---------------------------------------------------------------+
+|                                                               |
+|                    [ Picture of Sender ]                      |
+|                          /   \                                |
+|                         /     \                               |
+|          PHYSIQUE      /       \      PERSONALITY             |
+|         (Fisik)       /         \     (Karakter)              |
+|          [✓]          |         |      [✓]                    |
+|                       |         |                             |
+|    RELATIONSHIP ------|  CULTURE |------ REFLECTION           |
+|    (Relasi)    [✓]    |  (Nilai) |      (Citra)      [ ]      |
+|                       |   [✓]    |                             |
+|                       |         |                             |
+|                       \         /                             |
+|                        \       /                              |
+|                         \     /                               |
+|                    [ Picture of Receiver ]                    |
+|                                                               |
+|                    SELF-IMAGE (Citra Diri)                    |
+|                           [ ]                                 |
++---------------------------------------------------------------+
+
+Legenda: [✓] = Sudah Diisi, [ ] = Kosong
+```
+
+**Panel Samping (Saat "Physique" Diklik):**
+
+```text
++------------------------------------------+
+| SISI: PHYSIQUE (Wujud Fisik Merek)       |
++------------------------------------------+
+| [ AI Suggest ]  Tanya Pakar Kapferer >   |
+|                                          |
+| Deskripsi Fisik:                         |
+| [______________________________________] |
+| [______________________________________] |
+|                                          |
+| Elemen Visual Kunci:                     |
+| [✓] Logo Geometris                       |
+| [✓] Warna Biru Dongker                   |
+| [ ] Ilustrasi                            |
+|                                          |
+| Terhubung dengan:                        |
+| • Personality: "Profesional & Modern"    |
+| • Culture: "Presisi & Teknologi"         |
+|                                          |
+| [ Simpan Perubahan ]                     |
++------------------------------------------+
+```
+
+---
+
+## 📁 Dokumen 4: AI Moodboard Generator (Pilar 7)
+
+### 1. Tujuan Fitur
+Menghasilkan *moodboard* visual otomatis berdasarkan input strategis dari **Aaker Perspective Canvas** dan **Kapferer Prism**. Menghemat waktu *brainstorming* visual untuk tim desain.
+
+### 2. Alur Kerja (Workflow)
+
+1.  User telah mengisi minimal 3 sisi **Kapferer Prism** (Physique, Personality, Culture).
+2.  User membuka tab **"Moodboard Generator"**.
+3.  Sistem menampilkan 3 opsi *moodboard* yang dihasilkan AI.
+4.  User memilih satu opsi, lalu dapat mengeditnya:
+    -   Ganti gambar dengan *search* dari pustaka bebas royalti.
+    -   Kunci palet warna.
+5.  User menyimpan *moodboard* sebagai referensi di **Pilar 3 (Template Editor)**.
+
+### 3. Konsep UI/UX
+
+**Halaman Generator:**
+
+```text
++---------------------------------------------------+
+|  AI MOODBOARD GENERATOR                           |
+|  Berdasarkan: "Physique: Minimalis, Geometric"    |
+|              "Culture: Sustainable, Earthy"        |
++---------------------------------------------------+
+|                                                   |
+|  Opsi 1 - "Clean Eco"                             |
+|  +-----------------------------------------------+ |
+|  | [Gambar 1] [Gambar 2] [Gambar 3]             | |
+|  | [Gambar 4] [Gambar 5] [Palet Warna]          | |
+|  |                                              | |
+|  | [ Pilih Opsi Ini ]                           | |
+|  +-----------------------------------------------+ |
+|                                                   |
+|  Opsi 2 - "Modern Botanical"                      |
+|  +-----------------------------------------------+ |
+|  | [Gambar 1] [Gambar 2] [Gambar 3]             | |
+|  | ...                                          | |
+|  | [ Pilih Opsi Ini ]                           | |
+|  +-----------------------------------------------+ |
+|                                                   |
+|  Opsi 3 - "Urban Green"                           |
+|  ...                                              |
+|                                                   |
+|  [ Generate Ulang ]   [ Lanjutkan ke Editor ]     |
++---------------------------------------------------+
+```
+
+**Tampilan Editor Moodboard (Setelah Memilih):**
+
+```text
++---------------------------------------------------+
+|  EDIT MOODBOARD                                   |
++---------------------------------------------------+
+|  [Undo] [Redo]                        [Save] [X]  |
+|                                                   |
+|  +-----------------------------------------------+ |
+|  |                                               | |
+|  |   [Drag & Drop Gambar di sini]                | |
+|  |   [Klik gambar untuk ganti dari Pustaka]      | |
+|  |                                               | |
+|  +-----------------------------------------------+ |
+|                                                   |
+|  Pustaka Gambar (Bebas Royalti):                  |
+|  [Cari: "minimalist plant"]                       |
+|  [Gambar 1] [Gambar 2] [Gambar 3] ...            |
+|                                                   |
+|  Palet Warna Terkunci:                            |
+|  [#2C5F2D] [#8B9A46] [#E5E5E5]                   |
+|  (Warna tidak bisa diubah oleh Editor)            |
++---------------------------------------------------+
+```
+
+---
+
+## 📁 Dokumen 5: AI Co-Strategist Sidebar (Pilar 6)
+
+### 1. Tujuan Fitur
+Memberikan akses instan ke "konsultan virtual" yang memahami teori para pakar branding. Fitur ini hadir sebagai sidebar yang selalu tersedia di seluruh platform.
+
+### 2. Alur Kerja (Workflow)
+
+1.  User berada di halaman mana pun (Kanvas, Editor, Auditor).
+2.  User mengklik ikon **"AI Co-Strategist"** di pojok kanan bawah.
+3.  Panel *chat* meluncur dari kanan.
+4.  Sistem secara otomatis membaca konteks halaman (misal: "User sedang mengisi Physique").
+5.  User dapat:
+    -   Mengetik pertanyaan bebas.
+    -   Memilih *prompt* cepat (Misal: "Apa kata Aaker tentang ini?").
+    -   Meminta AI untuk **"Isi Sisi Ini"**.
+6.  AI merespons dalam bentuk teks, dan menawarkan tombol **"Terapkan"** yang akan mengisi formulir secara otomatis.
+
+### 3. Konsep UI/UX
+
+**Ikon Pemicu (Floating Action Button):**
+
+```text
++---------------------------------------+
+|                                       |
+|                 [Web Content]         |
+|                                       |
+|                              +-------+|
+|                              |  🧠   ||  <-- Ikon AI Co-Strategist
+|                              +-------+|
++---------------------------------------+
+```
+
+**Panel Chat Terbuka:**
+
+```text
++--------------------------------------------------+
+|  AI CO-STRATEGIST (BrandOS)                 [X]  |
++--------------------------------------------------+
+|                                                  |
+|  Konteks: Anda sedang mengisi "Brand Mantra".    |
+|                                                  |
+|  Saran Cepat:                                    |
+|  [💡] Beri saya contoh Brand Mantra Nike.        |
+|  [📖] Apa prinsip Scott Davis tentang ini?       |
+|  [✨] Isi Mantra untuk saya.                     |
+|                                                  |
+|  ---------------------------------------------   |
+|  **AI:** Berdasarkan input Anda (Why: Memberdayakan |
+|  kreativitas), saran Brand Mantra yang baik adalah:|
+|  "Unlocking Creative Potential."                  |
+|  Ingin menggunakan ini?                           |
+|                                                  |
+|  [ Ya, Gunakan ]   [ Cari Alternatif ]           |
+|                                                  |
+|  ---------------------------------------------   |
+|  [ Ketik pesan...]                          [➤]  |
++--------------------------------------------------+
+```
+
+---
+
+## 📁 Dokumen 6: White-Label Reporting (Pilar 5)
+
+### 1. Tujuan Fitur
+Memungkinkan agensi untuk menghasilkan laporan profesional (PDF) dengan logo dan identitas agensi mereka sendiri, bukan logo BrandOS. Fitur ini krusial untuk mempertahankan citra agensi di mata klien.
+
+### 2. Alur Kerja (Workflow)
+
+1.  **Setup (Admin Agency):**
+    -   Buka **Settings > Agency Profile**.
+    -   Upload **Logo Agency**.
+    -   Pilih **Warna Primer Agency**.
+2.  **Penggunaan:**
+    -   Buka modul Auditor (Pilar 2).
+    -   Klik **"Export Laporan PDF"**.
+    -   Sistem merender laporan dengan:
+        -   Header: Logo Agency.
+        -   Footer: "Dipersembahkan oleh [Nama Agency]".
+        -   Skema warna sesuai warna primer agency.
+
+### 3. Konsep UI/UX
+
+**Halaman Settings Agency:**
+
+```text
++---------------------------------------------------+
+|  AGENCY PROFILE - WHITE LABEL SETTINGS            |
++---------------------------------------------------+
+|                                                   |
+|  Logo Laporan (Header):                           |
+|  [ Upload Logo ]  (Rekomendasi: PNG, tinggi 40px) |
+|  [Preview: (Logo Kecil)]                          |
+|                                                   |
+|  Warna Aksen Laporan:                             |
+|  [ Color Picker: #FF5733 ]                        |
+|  (Digunakan untuk judul, garis, dan tombol)       |
+|                                                   |
+|  Footer Text:                                     |
+|  [ Dipersembahkan oleh Nama Agency              ] |
+|                                                   |
+|  [ Simpan Pengaturan ]                            |
++---------------------------------------------------+
+```
+
+**Preview Laporan PDF (Hasil Ekspor):**
+
+```text
++---------------------------------------------------+
+|  [LOGO AGENCY]                                    |
+|                                                   |
+|  LAPORAN BRAND HEALTH                             |
+|  Untuk: PT. Klien Sejahtera                       |
+|  Periode: April 2026                              |
+|                                                   |
+|  =============================================    | <-- Garis warna aksen agency
+|                                                   |
+|  Ringkasan Skor: 67/100                           |
+|  ... (Isi Laporan Auditor) ...                    |
+|                                                   |
+|  =============================================    |
+|                                                   |
+|  Laporan ini dibuat secara otomatis oleh:          |
+|  Dipersembahkan oleh Digital Agency               |
+|  (Tanpa menyebut BrandOS)                         |
++---------------------------------------------------+
+```
+
+---
